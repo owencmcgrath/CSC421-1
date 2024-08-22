@@ -1,0 +1,37 @@
+In his classic paper, A Mathematical Theory of Communication, Claude E. Shannon described a method for the stochastic generation of text. That is, he showed how it was possible to generate "random" sequences of characters with specific probabilistic characteristics. This included generating "random" text whose probability distribution matched a given source text. Given a source text, he defined the kth-order approximation of that text as:
+
+1st-order approximation:
+Characters are generated at random following the same character frequency distribution as in the source text. That is, if the character 'e' appeared twice as often as 'w' in the source text, then the probability of generating an 'e' should be twice the probability of generating a 'w'.
+2nd-order approximation:
+Characters are generated at random following the same character-pair frequency distribution as in the source text. That is, if the character 't' was the last one generated, then the next character should be generated based on the frequencies of characters that follow 't' in the source text. For example, if 't' appeared 3 times in the source text: in "three" and "teeth", then there would be a 2/3 probability that 'h' would be generated next and a 1/3 probability that 'e' would be generated.
+  .
+  .
+  .
+kth-order approximation:
+Characters are generated at random following the same (k-character)-combination frequency distribution as in the source text. That is, if "c1...ck-1" were the last k-1 characters generated, then the next character should be generated based on the frequencies of characters that follow "c1...ck-1" in the source text. For example, if k = 4 and "the" appeared 5 times in the source text: in "then", "the ", "weather", "heathen", and "lathe ", then there would be a 2/5 probability that 'n' would be generated next, a 2/5 probability that ' ' would be generated, and a 1/5 probability that 'r' would be generated.
+For this assignment, you are to implement a program that generates kth-order approximations of a source text. For simplicity, ignore all characters other than letters and spaces, and treat all letters as uppercase. Your program should prompt the user for the name of the source file and the desired order for the approximation, then repeatedly prompt for the lengths of sequences to generate. For example:
+
+Enter the file name: lincoln.txt
+Enter the desired order (>= 1): 4
+
+Enter the desired string length (negative to quit): 40
+E OUR FOR LONG PLACE FOR THAT CANNOT CAN
+
+Enter the desired string length (negative to quit): 20
+SITION THEY DIED IN
+
+Enter the desired string length (negative to quit): 40
+OF THIS GREAT THIS NATION THAT TASK REMA
+
+Enter the desired string length (negative to quit): -1
+**DONE**
+Note that a 1st-order approximation is similar to the source text only in the relative frequencies of the characters. As the order increases, the generated text pulls larger and larger sequences of characters from the source text. By the time the order reaches 8 or 10, it is likely that entire sections of the source text will be generated.
+
+To simplify your task, you are given two starter files: ApproxGenerator.java and ApproxDriver.java. The ApproxGenerator class reads the contents of a text file (ignoring any characters other than letters or spaces) and provides a generate method for generating sequences whose probability distribution matches the file. ApproxDriver is a simple driver program that prompts the user for the input file and repeatedly generates and displays 1st-order approximations of that file. You are to build on these classes to enable the generation of approximations of any order and length (as shown in the sample output).
+
+Several points to consider:
+
+When generating a kth-order approximation where k > 1, you will need to "seed" the process with the initial k-1 characters. You should randomly choose some (k-1)-character sequence from the source text as your initial seed. Following the initial seed, each successive letter should be generated based on the frequencies of k-character sequences in the source text (as described above).
+In order to generate sequences in a kth-order approximation, you will need to create a data structure that allows for selecting the next character given the (k-1) characters that have come before. The obvious choice is a map, where the keys are the (k-1)-character sequences that appear in the source file and the values represent the distribution of characters that follow. The simplest (although not most space-efficient) is to store a string made up of every occurrence of a character that appears after the key. For example, For example, if the order is 4 and "the" appeared 5 times in the source text: in "then", "the ", "weather", "heathen", and "lathe ", then the value associated with the key "the" would be "n rn ". Selecting the next character in the generated sequence can then be done by selecting a random character from this string value.
+There is one special case that you must consider when generating text. Suppose you are generating a kth-order approximation and the last k-1 characters in the source text are unique. That is, the final (k-1)-character sequence in the source text appears only once in the file (at the very end). If you ever generated this sequence, you will have no basis for generating the next character (since no character follows that sequence in the source text). In the rare event that this happens, your code should simply choose a new seed sequence (i.e., a (k-1)-character sequence from somewhere in the source text) to add to the sequence and continue from there.
+Your program should perform reasonable error checking. Note that the order must be less than the number of characters in the file. If the user asks for a sequence whose length is less than the order, then your program should simply select a random sequence from the file (i.e., a seed of the specified length).

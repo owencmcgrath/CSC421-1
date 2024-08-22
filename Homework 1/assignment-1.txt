@@ -1,0 +1,37 @@
+#1
+Answer the following questions based on the figure below:
+
+Can a disk contain multiple movies?
+No, it cannot, since it is a mandatory one-to-one relationship
+
+Does an actor have to be in at least one movie?
+Yes
+
+How many disks can be rented to customers?
+At minimum, one. At maximum, n+1.
+
+Can a customer exist without renting a disk?
+No, they have to rent at least one disk.
+
+Why is serial number underlined in the disk entity?
+It is considered a unique attribute. Each instance of a serial number will be different than the last.
+b
+What type of attribute is address in the customer entity?
+Composite, since it consists of the state, zip code, and city.
+
+What are the cardinalities of the relationship between store and disk? //ask
+A binary, one to may relationship.
+
+What type of entity is rental, what creates this entity, and where do its attributes come from? //ask
+Rental is a ternary entity, and it is created by the customer renting the specific disk. The attributes come from the customer renting it: the price, the date it is due back by, and the date that is was rented.
+
+What would be the identifier of rental?
+serial_number, since each rental would only have a specific serial id.
+
+What other changes, if any, would you make to the current model?
+I would give the rental table a specific id.
+
+#2
+Create a textual description of the figure below. Be sure to state the business rules (both directions) that are captured by this model (e.g. an employee is assigned to one and only one supervisor): //this one is rough.
+
+The publisher entity consists of the publisher_id, which is the a unique identifier. A book must be published by a publisher, but a publishing house can publish any amount of books from 0 to n+1. The book entity is in a quaternary relationship with publishing house, customer, and author. A book must have a distinct ISBN, along with the book author who also must have their own, distinct author_id and ISBN which are gotten from the author entity and the book entity, respectively. The author themselves, who is in a binary relationship with the book_author, does not need to have a ISBN, but does need the author_id. A book is sold, via a sale, to a customer, who purchases the book. The sale is in a tertiary relationship with the customer and the book with the customer_id and ISBN being the required information for the sale to take place.
