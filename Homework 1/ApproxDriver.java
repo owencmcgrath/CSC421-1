@@ -21,6 +21,7 @@ public class ApproxDriver
         System.out.print("The desired order is: " + desiredOrder);
 
         ApproxGenerator approx = new ApproxGenerator(filename, desiredOrder);
+        approx.generateMap(desiredOrder);
 
         System.out.print("\nEnter the desired string length (negative to quit): ");
         int numChars = input.nextInt();
