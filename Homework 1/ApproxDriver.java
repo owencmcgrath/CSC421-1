@@ -14,13 +14,12 @@ public class ApproxDriver
 
         System.out.print("Enter the file name: ");
         String filename = input.next();
-        System.out.print("The selected file is: " + filename);
 
         System.out.println("\nEnter the desired order (>= 1): ");
         int desiredOrder = input.nextInt();
-        System.out.print("The desired order is: " + desiredOrder);
 
         ApproxGenerator approx = new ApproxGenerator(filename, desiredOrder);
+
         approx.generateMap(desiredOrder);
 
         System.out.print("\nEnter the desired string length (negative to quit): ");

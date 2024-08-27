@@ -37,7 +37,6 @@ public class ApproxGenerator
             this.cleanText += " ";
         }
         this.cleanText = this.cleanText.trim().replaceAll("\\s+", " ");
-        System.out.println(cleanText);
 
         //length - order - 1 ensures that there is always space for the seed
         int randomInteger = randy.nextInt(cleanText.length() - (order - 1));
@@ -50,31 +49,43 @@ public class ApproxGenerator
         infile.close();
     }
 
+   /*
+    * method that generates a map based on a seed and the characters that follow it. the seed is the key and the characters that follow it are the values.
+    * the characters are stored in a linked list.
+    * @param order -> the number of characters in the seed
+    * @return mapOfSeedsAndCharacters -> a map of seeds and the characters that follow them
+    */
     public Map<String, LinkedList<Character>> generateMap(int order)
     {
         HashMap<String, LinkedList<Character>> mapOfSeedsAndCharacters = new HashMap<String, LinkedList<Character>>();
 
         for (int i = 0; i < cleanText.length() - order; i++) {
-            String seed = cleanText.substring(i, i + order); //gets current index and the next order characters
-            char nextChar = cleanText.charAt(i + order); //gets the character after the seed
+            String seed = cleanText.substring(i, i + order); //builds a string at the current index and the next order characters
+            char nextChar = cleanText.charAt(i + order); //gets the characters after the seed
 
             LinkedList<Character> charactersOfSeed = mapOfSeedsAndCharacters.getOrDefault(seed, new LinkedList<>()); //gets the list of characters for the seed, if it doesn't exist, creates a new list
+
             charactersOfSeed.add(nextChar); //adds the next character to the list
             mapOfSeedsAndCharacters.put(seed, charactersOfSeed); //puts the seed and the list of characters into the map
-
-            String nextSeed = seed.substring(1) + nextChar; //creates the next seed by removing the first character of the current seed and adding the next character
         }
-
         return mapOfSeedsAndCharacters;
     }
 
-
+    /**
+    * method that generates a string of characters based on the input text, order of the seed, and characters that follow the seed.
+    * @param numChars -> the number of characters to generate
+    * @param order -> the number of characters in the seed
+    * @return newText -> the generated text
+    */
     public String generate(int numChars, int order)
     {
         String newText = "";
         while (newText.length() < numChars)
         {
-            this.generateMap(order);
+            LinkedList<Character> charactersOfSeed = generateMap(order).get(seed); //gets the list of characters for the seed
+            char nextChar = charactersOfSeed.get(randy.nextInt(charactersOfSeed.size())); //gets a random character from the list
+            newText += nextChar; //adds the character to the new text
+            seed = seed.substring(1) + nextChar; //updates the seed
         }
         return newText;
     }
