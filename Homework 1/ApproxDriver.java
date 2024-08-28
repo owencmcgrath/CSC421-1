@@ -24,6 +24,14 @@ public class ApproxDriver
 
         System.out.print("\nEnter the desired string length (negative to quit): ");
         int numChars = input.nextInt();
+
+        //you cannot have a string of length n and seed of n + >1
+        //so we must set the desired order to the length of the string
+        if (numChars < desiredOrder)
+        {
+            desiredOrder = numChars;
+        }
+
         while (numChars >= 0)
         {
             System.out.println(approx.generate(numChars, desiredOrder));
