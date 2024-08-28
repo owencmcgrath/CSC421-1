@@ -3,7 +3,7 @@ import java.util.Scanner;
 /**
  * Driver for generating strings that have the same statistical distribution of
  * letters and spaces as a specified file.
- *   @author Dave Reed
+ *   @author Dave Reed, Owen McGrath
  *   @version 8/20/24
  */
 public class ApproxDriver
@@ -18,15 +18,13 @@ public class ApproxDriver
         System.out.println("\nEnter the desired order (>= 1): ");
         int desiredOrder = input.nextInt();
 
+        System.out.print("\nEnter the desired string length (negative to quit): ");
+        int numChars = input.nextInt();
+
         ApproxGenerator approx = new ApproxGenerator(filename, desiredOrder);
 
         approx.generateMap(desiredOrder);
 
-        System.out.print("\nEnter the desired string length (negative to quit): ");
-        int numChars = input.nextInt();
-
-        //you cannot have a string of length n and seed of n + >1
-        //so we must set the desired order to the length of the string
         if (numChars < desiredOrder)
         {
             desiredOrder = numChars;
