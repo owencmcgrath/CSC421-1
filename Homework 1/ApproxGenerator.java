@@ -88,6 +88,11 @@ public class ApproxGenerator
     {
         String seed = this.generateSeed(order); //generate initial seed
 
+        if (numChars < order)
+        {
+            order = numChars;
+        }
+
         String newText = "";
         while (newText.length() < numChars)
         {

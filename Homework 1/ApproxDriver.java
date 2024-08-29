@@ -26,11 +26,6 @@ public class ApproxDriver
 
         approx.generateMap(desiredOrder);
 
-        if (numChars < desiredOrder)
-        {
-            desiredOrder = numChars;
-        }
-
         while (numChars >= 0)
         {
             System.out.println(approx.generate(numChars, desiredOrder));
