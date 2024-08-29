@@ -8,6 +8,7 @@ import java.util.Scanner;
  */
 public class ApproxDriver
 {
+    //TODO: add error checking, files, strings that are not numbers, etc.
     public static void main(String[] args) throws Exception
     {
         Scanner input = new Scanner(System.in);
