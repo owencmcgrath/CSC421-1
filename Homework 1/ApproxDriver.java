@@ -8,7 +8,6 @@ import java.util.Scanner;
  */
 public class ApproxDriver
 {
-    //TODO: add error checking, files, strings that are not numbers, etc.
     public static void main(String[] args) throws Exception
     {
         Scanner input = new Scanner(System.in);
@@ -16,15 +15,15 @@ public class ApproxDriver
         System.out.print("Enter the file name: ");
         String filename = input.next();
 
+        ApproxGenerator approx = new ApproxGenerator(filename);
+
         System.out.println("\nEnter the desired order (>= 1): ");
         int desiredOrder = input.nextInt();
 
+        approx.generateMap(desiredOrder);
+
         System.out.print("\nEnter the desired string length (negative to quit): ");
         int numChars = input.nextInt();
-
-        ApproxGenerator approx = new ApproxGenerator(filename, desiredOrder);
-
-        approx.generateMap(desiredOrder);
 
         while (numChars >= 0)
         {
@@ -35,5 +34,5 @@ public class ApproxDriver
         }
         System.out.println("**DONE**");
         input.close();
-    }
+}
 }

@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * Class that reads in and stores the contents of a text file.
+ * Class that reads in=, stores, and cleans the contents of a text file.
  * @author Dave Reed, Owen McGrath
  * @version 8/20/24
  */
@@ -15,7 +15,7 @@ public class ApproxGenerator
     private String cleanText;
     private Random randy;
 
-    public ApproxGenerator(String fileName, int order) throws Exception
+    public ApproxGenerator(String fileName) throws Exception
     {
         this.cleanText = "";
         this.randy = new Random();
@@ -57,8 +57,8 @@ public class ApproxGenerator
     }
 
    /*
-    * method that generates a map based on a seed and the characters that follow it. the seed is the key and the characters that follow it are the values.
-    * the characters are stored in a linked list.
+    * method that generates a map based on a seed and the characters that follow it.
+    * the seed is the key and the characters that follow it are the stored values.
     * @param order -> the number of characters in the seed
     * @return mapOfSeedsAndCharacters -> a map of seeds and the characters that follow them
     */
@@ -67,7 +67,7 @@ public class ApproxGenerator
         HashMap<String, LinkedList<Character>> mapOfStringsAndCharacters = new HashMap<String, LinkedList<Character>>();
 
         for (int i = 0; i < cleanText.length() - order; i++) {
-            String starterString = cleanText.substring(i, i + order); //gets current index and the next order characters
+            String starterString = cleanText.substring(i, i + order); //builds a string based on the current index and the next order characters
             char nextChar = cleanText.charAt(i + order); //gets the characters after the seed
 
             LinkedList<Character> charactersOfSeed = mapOfStringsAndCharacters.getOrDefault(starterString, new LinkedList<>()); //gets the list of characters for the seed. if it doesn't exist, creates a new list (what the getOrDefault method does.)
@@ -79,7 +79,8 @@ public class ApproxGenerator
     }
 
     /**
-    * method that generates a string of characters based on the input text, order of the seed, and characters that follow the seed.
+    * method that generates a string of characters based on the input
+    * text, order of the seed, and characters that follow the seed.
     * @param numChars -> the number of characters to generate
     * @param order -> the number of characters in the seed
     * @return newText -> the generated text
@@ -91,6 +92,7 @@ public class ApproxGenerator
         if (numChars < order)
         {
             order = numChars;
+            System.out.println("The order is too large for the number of characters. The order has been set to " + order + ".");
         }
 
         String newText = "";
@@ -98,7 +100,7 @@ public class ApproxGenerator
         {
             LinkedList<Character> charactersOfSeed = generateMap(order).get(seed); //gets the list of characters for the seed
 
-            //if the seed doesn't exist in the map, generate a new seed
+            //if the seed doesn't exist in the map (i.e, there is nothing left at the end), generate a new seed
             if (charactersOfSeed == null)
             {
                 seed = this.generateSeed(order);
@@ -107,7 +109,7 @@ public class ApproxGenerator
 
             char nextChar = charactersOfSeed.get(randy.nextInt(charactersOfSeed.size())); //gets a random character from the list
             newText += nextChar; //adds the character to the new text
-            seed = seed.substring(1) + nextChar; //updates the seed
+            seed = seed.substring(1) + nextChar; //updates the seed with the new character
         }
         return newText;
     }
