@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
+/*
  * Class that reads in=, stores, and cleans the contents of a text file.
  * @author Dave Reed, Owen McGrath
  * @version 8/20/24
@@ -39,7 +39,7 @@ public class ApproxGenerator
         infile.close();
     }
 
-    /**
+   /*
     * method that generates a seed based on the input text and order of the seed.
     * @param order -> the number of characters in the seed
     * @return seed -> the generated seed
@@ -78,7 +78,35 @@ public class ApproxGenerator
         return mapOfStringsAndCharacters;
     }
 
-    /**
+   /*
+    * method that checks for errors in the input values and adjusts them if necessary.
+    * @param numChars -> the number of characters to generate
+    * @param order -> the number of characters in the seed
+    * @return -> an array of the adjusted values
+    */
+    public int[] errorChecking(int numChars, int order)
+    {
+        if (numChars < order)
+        {
+            order = numChars;
+            System.out.println("The order is too large for the number of characters. The order has been set to " + order + ".");
+        }
+
+        if (numChars > cleanText.length())
+        {
+            numChars = cleanText.length();
+            System.out.println("The number of characters is too large. The number of characters has been set to " + numChars + ".");
+        }
+
+        if (order > cleanText.length())
+        {
+            order = cleanText.length();
+            System.out.println("The order is too large. The order has been set to " + order + ".");
+        }
+        return new int[]{numChars, order}; //since we need to return multiple variables, they are added to an array
+    }
+
+   /*
     * method that generates a string of characters based on the input
     * text, order of the seed, and characters that follow the seed.
     * @param numChars -> the number of characters to generate
@@ -87,13 +115,11 @@ public class ApproxGenerator
     */
     public String generate(int numChars, int order)
     {
-        String seed = this.generateSeed(order); //generate initial seed
+        int[] possiblyAdjustedValues = this.errorChecking(numChars, order);
+        numChars = possiblyAdjustedValues[0]; //sets the values to the adjusted values, if they were adjusted
+        order = possiblyAdjustedValues[1]; //sets the values to the adjusted values, if they were adjusted
 
-        if (numChars < order)
-        {
-            order = numChars;
-            System.out.println("The order is too large for the number of characters. The order has been set to " + order + ".");
-        }
+        String seed = this.generateSeed(order); //generate initial seed
 
         String newText = "";
         while (newText.length() < numChars)
