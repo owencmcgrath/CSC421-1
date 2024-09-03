@@ -6,21 +6,22 @@ import java.util.Random;
 import java.util.Scanner;
 
 /*
- * Class that reads in=, stores, and cleans the contents of a text file.
+ * Class that reads in, stores, and cleans the contents of a text file.
  * @author Dave Reed, Owen McGrath
  * @version 8/20/24
  */
 public class ApproxGenerator
 {
     private String cleanText;
-    private Random randy;
+    private Random random;
 
     public ApproxGenerator(String fileName) throws Exception
     {
         this.cleanText = "";
-        this.randy = new Random();
+        this.random = new Random();
 
         Scanner infile = new Scanner(new File(fileName));
+
         while (infile.hasNextLine())
         {
             String nextLine = infile.nextLine().toUpperCase();
@@ -39,6 +40,30 @@ public class ApproxGenerator
         infile.close();
     }
 
+    /*
+     * method that checks for errors in the input values and adjusts them if necessary.
+     * @param numChars -> the number of characters to generate
+     * @param order -> the number of characters in the seed
+     * @return -> an array of the adjusted values
+     */
+     public int[] errorChecking(int numChars, int order)
+     {
+        //if the order is greater than the number of characters, set the order to the number of characters
+        if (order > numChars)
+        {
+            order = numChars;
+            System.out.println("The order is too large for the number of characters. The order has been set to " + order + ".");
+        }
+
+        //if the number of characters is greater than the length of the text, set the number of characters to the length of the text
+        if (numChars > cleanText.length())
+        {
+            numChars = cleanText.length();
+            System.out.println("The number of characters is too large. The number of characters has been set to " + numChars + ".");
+        }
+        return new int[]{numChars, order}; //since we need to return multiple variables, they are added to an array
+    }
+
    /*
     * method that generates a seed based on the input text and order of the seed.
     * @param order -> the number of characters in the seed
@@ -47,7 +72,7 @@ public class ApproxGenerator
     public String generateSeed(int order)
     {
         String seed = "";
-        int randomInteger = randy.nextInt(cleanText.length() - (order - 1));
+        int randomInteger = random.nextInt(cleanText.length() - (order - 1));
 
         for (int i = randomInteger; i < randomInteger + order; i++)
         {
@@ -79,34 +104,6 @@ public class ApproxGenerator
     }
 
    /*
-    * method that checks for errors in the input values and adjusts them if necessary.
-    * @param numChars -> the number of characters to generate
-    * @param order -> the number of characters in the seed
-    * @return -> an array of the adjusted values
-    */
-    public int[] errorChecking(int numChars, int order)
-    {
-        if (numChars < order)
-        {
-            order = numChars;
-            System.out.println("The order is too large for the number of characters. The order has been set to " + order + ".");
-        }
-
-        if (numChars > cleanText.length())
-        {
-            numChars = cleanText.length();
-            System.out.println("The number of characters is too large. The number of characters has been set to " + numChars + ".");
-        }
-
-        if (order > cleanText.length())
-        {
-            order = cleanText.length();
-            System.out.println("The order is too large. The order has been set to " + order + ".");
-        }
-        return new int[]{numChars, order}; //since we need to return multiple variables, they are added to an array
-    }
-
-   /*
     * method that generates a string of characters based on the input
     * text, order of the seed, and characters that follow the seed.
     * @param numChars -> the number of characters to generate
@@ -133,7 +130,7 @@ public class ApproxGenerator
                 charactersOfSeed = generateMap(order).get(seed);
             }
 
-            char nextChar = charactersOfSeed.get(randy.nextInt(charactersOfSeed.size())); //gets a random character from the list
+            char nextChar = charactersOfSeed.get(random.nextInt(charactersOfSeed.size())); //gets a random character from the list
             newText += nextChar; //adds the character to the new text
             seed = seed.substring(1) + nextChar; //updates the seed with the new character
         }
