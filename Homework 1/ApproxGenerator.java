@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 /*
  * Class that reads in, stores, and cleans the contents of a text file.
+ * It also generates a seed and a map of seeds to create simple text generation.
  * @author Dave Reed, Owen McGrath
  * @version 8/20/24
  */
@@ -40,30 +41,6 @@ public class ApproxGenerator
         infile.close();
     }
 
-    /*
-     * method that checks for errors in the input values and adjusts them if necessary.
-     * @param numChars -> the number of characters to generate
-     * @param order -> the number of characters in the seed
-     * @return -> an array of the adjusted values
-     */
-     public int[] errorChecking(int numChars, int order)
-     {
-        //if the order is greater than the number of characters, set the order to the number of characters
-        if (order > numChars)
-        {
-            order = numChars;
-            System.out.println("The order is too large for the number of characters. The order has been set to " + order + ".");
-        }
-
-        //if the number of characters is greater than the length of the text, set the number of characters to the length of the text
-        if (numChars > cleanText.length())
-        {
-            numChars = cleanText.length();
-            System.out.println("The number of characters is too large. The number of characters has been set to " + numChars + ".");
-        }
-        return new int[]{numChars, order}; //since we need to return multiple variables, they are added to an array
-    }
-
    /*
     * method that generates a seed based on the input text and order of the seed.
     * @param order -> the number of characters in the seed
@@ -89,16 +66,19 @@ public class ApproxGenerator
     */
     public Map<String, LinkedList<Character>> generateMap(int order)
     {
-        HashMap<String, LinkedList<Character>> mapOfStringsAndCharacters = new HashMap<String, LinkedList<Character>>();
+        HashMap<String, LinkedList<Character>> mapOfStringsAndCharacters = new HashMap<String, LinkedList<Character>>(); //creates a map of strings as keys and lists of characters as values
 
-        for (int i = 0; i < cleanText.length() - order; i++) {
-            String starterString = cleanText.substring(i, i + order); //builds a string based on the current index and the next order characters
+        for (int i = 0; i < cleanText.length() - order; i++)
+        {
+            String starterString = cleanText.substring(i, i + order); //NOT THE SEED. builds a string based on the current index and the next order characters.
             char nextChar = cleanText.charAt(i + order); //gets the characters after the seed
 
-            LinkedList<Character> charactersOfSeed = mapOfStringsAndCharacters.getOrDefault(starterString, new LinkedList<>()); //gets the list of characters for the seed. if it doesn't exist, creates a new list (what the getOrDefault method does.)
+            if (!mapOfStringsAndCharacters.containsKey(starterString))
+            {
+                mapOfStringsAndCharacters.put(starterString, new LinkedList<Character>()); //if the seed doesn't exist in the map, creates a new list
+            }
 
-            charactersOfSeed.add(nextChar); //adds the next character to the list
-            mapOfStringsAndCharacters.put(starterString, charactersOfSeed); //puts the seed and the list of characters into the map
+            mapOfStringsAndCharacters.get(starterString).add(nextChar); //adds the character to the list
         }
         return mapOfStringsAndCharacters;
     }
@@ -112,10 +92,6 @@ public class ApproxGenerator
     */
     public String generate(int numChars, int order)
     {
-        int[] possiblyAdjustedValues = this.errorChecking(numChars, order);
-        numChars = possiblyAdjustedValues[0]; //sets the values to the adjusted values, if they were adjusted
-        order = possiblyAdjustedValues[1]; //sets the values to the adjusted values, if they were adjusted
-
         String seed = this.generateSeed(order); //generate initial seed
 
         String newText = "";
@@ -123,8 +99,8 @@ public class ApproxGenerator
         {
             LinkedList<Character> charactersOfSeed = generateMap(order).get(seed); //gets the list of characters for the seed
 
-            //if the seed doesn't exist in the map (i.e, there is nothing left at the end), generate a new seed
-            if (charactersOfSeed == null)
+            // if the seed doesn't exist in the map (i.e, there is nothing left at the end), or has no characters generate a new seed
+            if (charactersOfSeed == null || charactersOfSeed.size() == 0)
             {
                 seed = this.generateSeed(order);
                 charactersOfSeed = generateMap(order).get(seed);
@@ -135,5 +111,56 @@ public class ApproxGenerator
             seed = seed.substring(1) + nextChar; //updates the seed with the new character
         }
         return newText;
+    }
+
+/////////////////////////////////////////////////////////////////User Input Error Checking////////////////////////////////////////////////////////////////////////
+
+    /*
+     * method that ensures the order is valid.
+     * @param order -> the order to check
+     * @param input -> the scanner object to read input
+     * @return order -> the valid order
+     */
+    public int ensureValidOrder(int order, Scanner input)
+    {
+        while (true) //loops infinetely until the order is valid
+        {
+            if (order > cleanText.length() || order < 1)
+            {
+                System.out.println("The order cannot be larger than the length of the text or less than zero. Please enter a valid order: ");
+                order = input.nextInt();
+            }
+            else
+            {
+                break; //if there is nothing to fix, just retun the original order
+            }
+        }
+        System.out.println("The order has been set to " + order + ".");
+        return order;
+    }
+
+    /*
+     * method that ensures the number of characters is valid.
+     * @param numChars -> the number of characters to check
+     * @param order -> the order of the seed
+     * @param input -> the scanner object to read input
+     * @return numChars -> the valid number of characters
+     */
+    public int ensureValidNumChars(int numChars, int order, Scanner input)
+    {
+        while (true) //loops infinetely until the order is valid
+        {
+            if (numChars < 1 ||numChars < order || numChars > cleanText.length())
+            {
+                System.out.println("The number of characters cannot be less than zero, less than the order you have chosen, or greater than the length of the text. Please enter a valid number of characters: ");
+                numChars = input.nextInt();
+            }
+            else
+            {
+                break; //if there is nothing to fix, just retun the original order
+            }
+        }
+        System.out.println("The number of characters has been set to " + numChars + ".");
+        return numChars;
     }
 }
