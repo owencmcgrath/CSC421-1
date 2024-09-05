@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 /*
  * Class that reads in, stores, and cleans the contents of a text file.
- * It also generates a seed and a map of seeds to create simple text generation.
+ * it also generates a seed and a map of seeds to create simple text generation.
  * @author Dave Reed, Owen McGrath
  * @version 8/20/24
  */
@@ -113,7 +113,7 @@ public class ApproxGenerator
         return newText;
     }
 
-/////////////////////////////////////////////////////////////////User Input Error Checking////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////// Error Checking ///////////////////////////////////////////////////////////////////////////
 
     /*
      * method that ensures the order is valid.
@@ -150,9 +150,9 @@ public class ApproxGenerator
     {
         while (true) //loops infinetely until the order is valid
         {
-            if (numChars < 1 ||numChars < order || numChars > cleanText.length())
+            if (numChars == 0 ||numChars < order && numChars > 0|| numChars > cleanText.length())
             {
-                System.out.println("The number of characters cannot be less than zero, less than the order you have chosen, or greater than the length of the text. Please enter a valid number of characters: ");
+                System.out.println("The number of characters cannot be zero, less than the order you have chosen, or greater than the length of the text. Please enter a valid number of characters: ");
                 numChars = input.nextInt();
             }
             else
@@ -160,7 +160,15 @@ public class ApproxGenerator
                 break; //if there is nothing to fix, just retun the original order
             }
         }
-        System.out.println("The number of characters has been set to " + numChars + ".");
-        return numChars;
+
+        if (numChars > 0) //if the user does not want to exit the string, give them a message of what is has been set to
+        {
+            System.out.println("The number of characters has been set to " + numChars + ".");
+            return numChars;
+        }
+        else
+        {
+            return numChars; //otherwise, just throw them out of the cli. (with message obv)
+        }
     }
 }
