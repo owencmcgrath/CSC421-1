@@ -2,10 +2,10 @@ import java.util.*;
 import java.io.*;
 
 /*
- * A class that defines the reads in a file, stores the knapsack information, and returns the most valuable set
- * @author Owen McGrath
- * @version 9/11/2024
- */
+* A class that defines the reads in a file, stores the knapsack information, and returns the most valuable set
+* @author Owen McGrath
+* @version 9/11/2024
+*/
 public class Knapsack
 {
     private static List<KnapsackItem> items = new ArrayList<>();
@@ -38,11 +38,50 @@ public class Knapsack
     {
         Set<KnapsackItem> optimalItems = new HashSet<KnapsackItem>();
         int currentWeight = 0;
+        int currentValue = 0;
+        int bestValue = 0;
+        String lengthOfItems = findStartingLength();
 
         while(currentWeight < maxWeight)
         {
+            //iterating from the back
+            for (int i = items.size() - 1; i >= 0; i--)
+            {
+                if (lengthOfItems.charAt(i) == '0')
+                {
+                    StringBuilder stringBuilder = new StringBuilder(lengthOfItems); //stringBuilder is a way for you to make a sequences of chars mutable and then convert it back to a string. i used the apex equivalent at my internship this summer and learned stringbuilder as a subsequent
 
+                    stringBuilder.setCharAt(i, '1');
+                    lengthOfItems = stringBuilder.toString();
+                }
+                else
+                {
+                    currentWeight = items.get(i).getWeight();
+                    currentValue = items.get(i).getValue();
+                }
+
+                if (currentValue > bestValue)
+                {
+                    optimalItems.add(items.get(i));
+                }
+            }
         }
         return optimalItems;
+    }
+
+   /*
+    * a method that takes the length of the items list and returns a string of zeroes to be added upon
+    * return lengthOfItemsStored -> length of the list in zeroes.
+    */
+    private static String findStartingLength()
+    {
+        String lengthOfItems = "0";
+
+        for (int i = 0; i < items.size(); i++)
+        {
+            lengthOfItems += "0";
+        }
+
+        return lengthOfItems;
     }
 }

@@ -1,11 +1,8 @@
-import java.util.*;
-import java.io.*;
-
 /*
- * A class that defines the KnapsackItem type
- * @author Owen McGrath
- * @version 9/9/2024
- */
+* A class that defines the KnapsackItem type
+* @author Owen McGrath
+* @version 9/9/2024
+*/
 public class KnapsackItem
 {
     private int weight;

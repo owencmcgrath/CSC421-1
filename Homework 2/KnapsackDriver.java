@@ -15,7 +15,7 @@ public class KnapsackDriver
         String filename = input.next();
 
         Knapsack knapsack = new Knapsack();
-        knapsack.addItem(filename);
+        Knapsack.addItem(filename);
         knapsack.findOptimalSubset(sackWeight);
 
         input.close();
