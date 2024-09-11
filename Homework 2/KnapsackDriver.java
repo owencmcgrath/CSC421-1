@@ -8,12 +8,14 @@ public class KnapsackDriver
 
         //getting the weight limit
         System.out.println("What is the weight limit of the knapsack?: ");
-        Integer weight = input.nextInt();
+        int sackWeight = input.nextInt();
 
         //read file in, cleaning is done here
         System.out.print("Enter the item's file: ");
         String filename = input.next();
-        input.close();
 
+        List<KnapsackItem> items = KnapsackItem.readList(filename);
+
+        input.close();
     }
 }
