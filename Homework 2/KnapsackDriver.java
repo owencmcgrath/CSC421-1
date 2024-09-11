@@ -14,7 +14,9 @@ public class KnapsackDriver
         System.out.print("Enter the item's file: ");
         String filename = input.next();
 
-        List<KnapsackItem> items = KnapsackItem.readList(filename);
+        Knapsack knapsack = new Knapsack();
+        knapsack.addItem(filename);
+        knapsack.findOptimalSubset(sackWeight);
 
         input.close();
     }
