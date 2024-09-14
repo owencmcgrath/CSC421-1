@@ -41,33 +41,47 @@ public class Knapsack
         int currentValue = 0;
         int bestValue = 0;
         String lengthOfItems = findStartingLength();
+        System.out.println(lengthOfItems);
 
-        while(currentWeight < maxWeight)
+        //iterating from the back
+        for (int i = items.size() - 1; i >= 0; i--)
         {
-            //iterating from the back
-            for (int i = items.size() - 1; i >= 0; i--)
+            if (lengthOfItems.charAt(i) == '1')
             {
-                if (lengthOfItems.charAt(i) == '0')
-                {
-                    StringBuilder stringBuilder = new StringBuilder(lengthOfItems); //stringBuilder is a way for you to make a sequences of chars mutable and then convert it back to a string. i used the apex equivalent at my internship this summer and learned stringbuilder as a subsequent
+                int weightOfItem = items.get(i).getWeight();
+                int valueOfItem = items.get(i).getValue();
+                currentWeight += weightOfItem;
+                currentValue += valueOfItem;
 
-                    stringBuilder.setCharAt(i, '1');
-                    lengthOfItems = stringBuilder.toString();
-                }
-                else
+                if (currentWeight > maxWeight)
                 {
-                    currentWeight = items.get(i).getWeight();
-                    currentValue = items.get(i).getValue();
+                    currentWeight = 0;
                 }
 
                 if (currentValue > bestValue)
                 {
-                    optimalItems.add(items.get(i));
+                    bestValue = currentValue;
                 }
+                System.out.println("The current value is: " + currentValue);
+                System.out.println("The current weight is: " + currentWeight);
+            }
+            else
+            {
+                StringBuilder stringBuilder = new StringBuilder(lengthOfItems); //stringBuilder is a way for you to make a sequences of chars mutable and then convert it back to a string. i used the apex equivalent at my intership this summer and learned stringbuilder as a subsequent >_<
+
+                stringBuilder.setCharAt(i, '1');
+                lengthOfItems = stringBuilder.toString();
+                System.out.println(lengthOfItems);
+            }
+
+            if (currentValue > bestValue)
+            {
+                optimalItems.add(items.get(i));
             }
         }
         return optimalItems;
     }
+
 
    /*
     * a method that takes the length of the items list and returns a string of zeroes to be added upon
