@@ -1,16 +1,16 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
-/*
+/**
 * A class that defines the reads in a file, stores the knapsack information, and returns the most valuable set
 * @author Owen McGrath
 * @version 9/11/2024
 */
 public class Knapsack
 {
-    private static List<KnapsackItem> items = new ArrayList<>();
+    private static final List<KnapsackItem> items = new ArrayList<>();
 
-   /*
+   /**
     * a method that reads in a text file and uses the scanner class to add each item and its attributes to an arraylist
     * @param file -> a text file to be read in
     * @return items -> an arraylist of all the items in a text file
@@ -23,8 +23,8 @@ public class Knapsack
             String line = infile.nextLine(); //setting up a line so that each line can be scanned
             Scanner lineScanner = new Scanner(line); //sets a variable so that each line is scanned
 
-            int weight = lineScanner.nextInt();
             int value = lineScanner.nextInt();
+            int weight = lineScanner.nextInt();
             String descriptor = lineScanner.next().trim();
 
             items.add(new KnapsackItem(weight, value, descriptor));
@@ -34,56 +34,105 @@ public class Knapsack
         return items;
     }
 
-    public Set<KnapsackItem> findOptimalSubset(int maxWeight)
+    /**
+     * this is a method that find the optimal subset for the knapsack problem
+     * @param maxWeight -> the maximum weight of the sack
+     * @return optimalItems -> items that are most optimal for the input 
+     */
+    public Set<KnapsackItem> findOptimalSubset(int maxWeight) 
     {
-        Set<KnapsackItem> optimalItems = new HashSet<KnapsackItem>();
-        int currentWeight = 0;
-        int currentValue = 0;
+        Set<KnapsackItem> optimalItems = new HashSet<>();
         int bestValue = 0;
         String lengthOfItems = findStartingLength();
-        System.out.println(lengthOfItems);
-
-        //iterating from the back
-        for (int i = items.size() - 1; i >= 0; i--)
+        int numItems = items.size();
+        
+        while (true) 
         {
-            if (lengthOfItems.charAt(i) == '1')
+            Set<KnapsackItem> currentItems = new HashSet<>();
+            int currentWeight = 0;
+            int currentValue = 0;
+            
+            for (int i = numItems - 1; i >= 0; i--) 
             {
-                int weightOfItem = items.get(i).getWeight();
-                int valueOfItem = items.get(i).getValue();
-                currentWeight += weightOfItem;
-                currentValue += valueOfItem;
-
-                if (currentWeight > maxWeight)
+                if (lengthOfItems.charAt(i) == '1') 
                 {
-                    currentWeight = 0;
-                }
+                    KnapsackItem item = items.get(i);
+                    int weightOfItem = item.getWeight();
+                    int valueOfItem = item.getValue();
 
-                if (currentValue > bestValue)
-                {
-                    bestValue = currentValue;
+                    if (currentWeight + weightOfItem <= maxWeight) 
+                    {
+                        currentWeight += weightOfItem;
+                        currentValue += valueOfItem;
+                        currentItems.add(item);
+                    }
                 }
-                System.out.println("The current value is: " + currentValue);
-                System.out.println("The current weight is: " + currentWeight);
             }
-            else
-            {
-                StringBuilder stringBuilder = new StringBuilder(lengthOfItems); //stringBuilder is a way for you to make a sequences of chars mutable and then convert it back to a string. i used the apex equivalent at my intership this summer and learned stringbuilder as a subsequent >_<
+            optimalItems = optimalItemsChecker(currentWeight, maxWeight, currentValue, bestValue, currentItems, optimalItems);
 
+            lengthOfItems = bitIterator(lengthOfItems);
+
+            if (lengthOfItems == null)
+            {
+                break;
+            }
+        }
+        Knapsack.outputOptimalItems(optimalItems);
+        return optimalItems;
+    }
+
+    /**
+     * a method that iterates the current bitmap based on whether or not a zero is found
+     * @param lengthOfItems -> the lenght of items that is being used in findOptimalSubset
+     * @return new string or null -> if the variable is changed, return it, otherwise return null
+     */
+    private static String bitIterator(String lengthOfItems)
+    {
+        StringBuilder stringBuilder = new StringBuilder(lengthOfItems);
+        
+        for (int i = lengthOfItems.length() - 1; i >= 0; i--) 
+        {
+            if (stringBuilder.charAt(i) == '0') 
+            {
                 stringBuilder.setCharAt(i, '1');
-                lengthOfItems = stringBuilder.toString();
-                System.out.println(lengthOfItems);
-            }
-
-            if (currentValue > bestValue)
+                return stringBuilder.toString();
+            } 
+            else 
             {
-                optimalItems.add(items.get(i));
+                stringBuilder.setCharAt(i, '0');
             }
+        }
+        return null;
+    }
+
+    
+    private static Set<KnapsackItem> optimalItemsChecker(int currentWeight, int maxWeight, int currentValue, int bestValue, Set<KnapsackItem> currentItems, Set<KnapsackItem> optimalItems)
+    {
+        if (currentWeight <= maxWeight && currentValue > bestValue) 
+        {
+        bestValue = currentValue;
+        optimalItems = new HashSet<>(currentItems);
         }
         return optimalItems;
     }
 
+    private static void outputOptimalItems(Set<KnapsackItem> optimalItems)
+    {
+        int totalWeight = 0;
+        int totalValue = 0;
 
-   /*
+        for (KnapsackItem item : optimalItems) 
+        {
+            totalWeight += item.getWeight();
+            totalValue += item.getValue();
+            System.out.println(item.getDescriptor());
+        }
+
+        System.out.println("Total weight: " + totalWeight);
+        System.out.println("Total value: " + totalValue);
+    }
+
+   /**
     * a method that takes the length of the items list and returns a string of zeroes to be added upon
     * return lengthOfItemsStored -> length of the list in zeroes.
     */
@@ -91,11 +140,10 @@ public class Knapsack
     {
         String lengthOfItems = "0";
 
-        for (int i = 0; i < items.size(); i++)
+        for (int i = 0; i < items.size(); i++) 
         {
             lengthOfItems += "0";
         }
-
         return lengthOfItems;
     }
 }

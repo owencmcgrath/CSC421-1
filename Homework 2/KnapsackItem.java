@@ -5,9 +5,9 @@
 */
 public class KnapsackItem
 {
-    private int weight;
-    private int value;
-    private String descriptor;
+    private final int weight;
+    private final int value;
+    private final String descriptor;
 
     public KnapsackItem(int weight, int value, String descriptor)
     {
