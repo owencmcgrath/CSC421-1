@@ -37,9 +37,9 @@ public class Knapsack
     public Set<KnapsackItem> findOptimalSubset()
     {
         Set<KnapsackItem> optimalItems = new HashSet<>();
-        String lengthOfItems = findStartingLength();
+        String bitmapForNumberOfItems = findStartingLength();
 
-        while (lengthOfItems != null)
+        while (bitmapForNumberOfItems != null)
         {
             Set<KnapsackItem> currentItems = new HashSet<>(); //current items is used to keep track of what we are currently using
             int currentWeight = 0;
@@ -47,22 +47,19 @@ public class Knapsack
 
             for (int i = items.size() - 1; i >= 0; i--)
             {
-                if (lengthOfItems.charAt(i) == '1') //here, a one in the bit pattern denotes that an item should be "gotten"
+                if (bitmapForNumberOfItems.charAt(i) == '1') //here, a one in the bit pattern denotes that an item should be "gotten"
                 {
                     KnapsackItem item = items.get(i);
                     int weightOfItem = item.getWeight();
                     int valueOfItem = item.getValue();
 
-                    if (currentWeight + weightOfItem <= maxWeight) //checking that the item that has been gotten does not push the sack over the limit which would be saurrr sad :(
-                    {
-                        currentWeight += weightOfItem;
-                        currentValue += valueOfItem;
-                        currentItems.add(item);
-                    }
+                    int results[] = weightChecker(currentWeight, weightOfItem, currentValue, valueOfItem, item, currentItems);
+                    currentWeight = results[0]; //update the value of weight from the returned array
+                    currentValue = results[1]; //update the value of value from the returned array
                 }
             }
             optimalItems = optimalItemsChecker(currentWeight, maxWeight, currentValue, currentItems, optimalItems); //an abstracted method for finding the most optimal value
-            lengthOfItems = bitIterator(lengthOfItems); //another abstracted method that is used to iterate through the bit patterns
+            bitmapForNumberOfItems = bitIterator(bitmapForNumberOfItems); //another abstracted method that is used to iterate through the bit patterns
         }
         outputOptimalItems(optimalItems);
         return optimalItems;
@@ -70,26 +67,26 @@ public class Knapsack
 
    /*
     * a method that iterates the current bitmap based on whether or not a zero is found
-    * @param lengthOfItems -> the lenght of items that is being used in findOptimalSubset
+    * @param bitmapForNumberOfItems -> the lenght of items that is being used in findOptimalSubset
     * @return new string or null -> if the variable is changed, return it, otherwise return null
     */
-    private String bitIterator(String lengthOfItems)
+    private String bitIterator(String bitmapForNumberOfItems)
     {
-        StringBuilder stringBuilder = new StringBuilder(lengthOfItems);
+        StringBuilder stringBuilder = new StringBuilder(bitmapForNumberOfItems); //string builder breaks a string down into a mutable series of characters, great for manipulating strings
 
-        for (int i = lengthOfItems.length() - 1; i >= 0; i--)
+        for (int i = bitmapForNumberOfItems.length() - 1; i >= 0; i--) //iteratre over the starting bitmap of zeroes, from the back.
         {
-            if (stringBuilder.charAt(i) == '0')
+            if (stringBuilder.charAt(i) == '0') //if the bitmap shows a zero...
             {
-                stringBuilder.setCharAt(i, '1');
-                return stringBuilder.toString();
+                stringBuilder.setCharAt(i, '1'); //make it a one...
+                return stringBuilder.toString(); //converting the stringbuilder back into a string
             }
             else
             {
-                stringBuilder.setCharAt(i, '0');
+                stringBuilder.setCharAt(i, '0'); //... if it is a one, set it back to a zero
             }
         }
-        return null;
+        return null; //if it is entirely ones, then just return null
     }
 
    /*
@@ -103,10 +100,10 @@ public class Knapsack
     */
     private Set<KnapsackItem> optimalItemsChecker(int currentWeight, int maxWeight, int currentValue, Set<KnapsackItem> currentItems, Set<KnapsackItem> optimalItems)
     {
-        if (currentWeight <= maxWeight && currentValue > bestValue) //if its less than the sack and greater than the best value...
+        if (currentWeight <= maxWeight && currentValue > bestValue) //if its less than the sack weight and greater than the best value...
         {
             bestValue = currentValue;
-            optimalItems = new HashSet<>(currentItems); //... make it the optimal items
+            optimalItems = new HashSet<>(currentItems); //... make the current items the optimal items.
         }
         return optimalItems;
     }
@@ -133,16 +130,27 @@ public class Knapsack
 
    /*
     * a method that takes the length of the items list and returns a string of zeroes to be added upon
-    * return lengthOfItemsStored -> length of the list in zeroes.
+    * return bitmapForNumberOfItemsStored -> length of the list in zeroes.
     */
     private String findStartingLength()
     {
-        String lengthOfItems = "0";
+        String bitmapForNumberOfItems = "0";
 
         for (int i = 0; i < items.size(); i++)
         {
-            lengthOfItems += "0";
+            bitmapForNumberOfItems += "0";
         }
-        return lengthOfItems;
+        return bitmapForNumberOfItems;
+    }
+
+    private int[] weightChecker(int currentWeight, int weightOfItem, int currentValue, int valueOfItem, KnapsackItem item, Set<KnapsackItem> currentItems)
+    {
+        if (currentWeight + weightOfItem <= maxWeight) //checking that the item that has been gotten does not push the sack over the limit
+        {
+            currentWeight += weightOfItem;
+            currentValue += valueOfItem;
+            currentItems.add(item);
+        }
+        return new int[]{currentWeight, currentValue}; //have to create an array with both of these values so that they can be reutrned together
     }
 }

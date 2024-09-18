@@ -17,6 +17,8 @@ public class KnapsackDriver
             String filename = input.next();
             Scanner infile = new Scanner(new File(filename));
 
+            //this loops through the entire file and creates a knapsack item with weight, value, and descriptor.
+            //from there, the add item is called, adding an item to an arraylist
             while (infile.hasNext())
             {
                 String line = infile.nextLine(); //setting up a line so that each line can be scanned

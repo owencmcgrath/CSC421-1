@@ -1,5 +1,5 @@
 /*
-* a clsass that defines the KnapsackItem type
+* a clsass that defines the KnapsackItem type, which stores weight, value, and descriptor
 * @author Owen McGrath
 * @version 9/9/2024
 */
