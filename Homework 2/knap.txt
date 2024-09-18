@@ -1,16 +1,8 @@
-3500 12 diamond ring
-2500 7 painting
-1800 20 camera
-1500 15 smartwatch
-1400 9 bracelet
-1300 30 telescope
-1100 6 gold necklace
-1000 3 wristwatch
-950 5 set of books
-900 4 sculpture
-850 22 gaming console
-800 10 vintage record player
-750 2 high-end headphones
-700 8 drone
-650 14 designer shoes
-600 11 luxury wallet
+5000 3 tiara
+2200 5 coin collection
+2100 40 tv
+2000 8 laptop
+1200 10 silverware
+800 25 stereo
+600 1 cell phone
+300 4 clock

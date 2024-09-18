@@ -1,5 +1,5 @@
 /*
-* A class that defines the KnapsackItem type
+* a clsass that defines the KnapsackItem type
 * @author Owen McGrath
 * @version 9/9/2024
 */

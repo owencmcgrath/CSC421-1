@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class KnapsackDriver
 {
@@ -6,20 +7,34 @@ public class KnapsackDriver
     {
         try (Scanner input = new Scanner(System.in))
         {
-            Knapsack knapsack = new Knapsack();
-
             //getting the weight limit
             System.out.println("What is the weight limit of the knapsack?: ");
             int sackWeight = input.nextInt();
-            //sackWeight = Knapsack.ensureValidWeight(sackWeight);
+            Knapsack knapsack = new Knapsack(sackWeight);
 
             //read file in, cleaning is done here
             System.out.print("Enter the item's file: ");
             String filename = input.next();
-            Knapsack.addItem(filename);
+            Scanner infile = new Scanner(new File(filename));
+
+            while (infile.hasNext())
+            {
+                String line = infile.nextLine(); //setting up a line so that each line can be scanned
+                Scanner lineScanner = new Scanner(line); //calls the scanner method with the line var
+
+                int value = lineScanner.nextInt();
+                int weight = lineScanner.nextInt();
+                String descriptor = lineScanner.next().trim();
+
+                KnapsackItem item = new KnapsackItem(weight, value, descriptor);
+                knapsack.addItem(item);
+
+                lineScanner.close();
+            }
+            infile.close();
 
             //findinf the optimal values, also printing them here.
-            knapsack.findOptimalSubset(sackWeight);
+            knapsack.findOptimalSubset();
         }
     }
 }

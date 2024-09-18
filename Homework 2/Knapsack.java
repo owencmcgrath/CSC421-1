@@ -1,38 +1,32 @@
 import java.util.*;
-import java.io.*;
 
 /*
-* a class that defines the reads in a file, stores the knapsack information, and returns the most valuable set
+* a class that the adds items, stores the knapsack information, and returns the most valuable set
 * @author Owen McGrath
 * @version 9/11/2024
 */
 public class Knapsack
 {
-    private static final List<KnapsackItem> items = new ArrayList<>();
-    private static int bestValue = 0; //best value is a class variable because its state needs to be persisted across methods (findOptimalSubset -> optimalItemsChecker)
+    private final List<KnapsackItem> items = new ArrayList<>();
+    private int bestValue = 0; //best value is a class variable because its state needs to be persisted across methods (findOptimalSubset -> optimalItemsChecker)
+    private int maxWeight;
 
    /*
-    * a method that reads in a text file and uses the scanner class to add each item and its attributes to an arraylist
-    * @param file -> a text file to be read in
-    * @return items -> an arraylist of all the items in a text file
+    * constructor to initialize max weight
+    * @param maxWeight
     */
-    public static List<KnapsackItem> addItem(String filename) throws FileNotFoundException
+    public Knapsack(int maxWeight)
     {
-        Scanner infile = new Scanner(new File(filename)); //infile for reading the file
-        while (infile.hasNext())
-        {
-            String line = infile.nextLine(); //setting up a line so that each line can be scanned
-            Scanner lineScanner = new Scanner(line); //calls the scanner method with the line var
+        this.maxWeight = maxWeight;
+    }
 
-            int value = lineScanner.nextInt();
-            int weight = lineScanner.nextInt();
-            String descriptor = lineScanner.next().trim();
-
-            items.add(new KnapsackItem(weight, value, descriptor));
-            lineScanner.close();
-        }
-        infile.close();
-        return items;
+   /*
+    * a method that add as a KnapsackItem to an arraylist of items.
+    * @param item -> a knapsack item
+    */
+    public void addItem(KnapsackItem item)
+    {
+        items.add(item);
     }
 
    /*
@@ -40,13 +34,12 @@ public class Knapsack
     * @param maxWeight -> the maximum weight of the sack
     * @return optimalItems -> items that are most optimal for the input
     */
-    public Set<KnapsackItem> findOptimalSubset(int maxWeight)
+    public Set<KnapsackItem> findOptimalSubset()
     {
         Set<KnapsackItem> optimalItems = new HashSet<>();
         String lengthOfItems = findStartingLength();
 
-
-        while (true)
+        while (lengthOfItems != null)
         {
             Set<KnapsackItem> currentItems = new HashSet<>(); //current items is used to keep track of what we are currently using
             int currentWeight = 0;
@@ -60,7 +53,7 @@ public class Knapsack
                     int weightOfItem = item.getWeight();
                     int valueOfItem = item.getValue();
 
-                    if (currentWeight + weightOfItem <= maxWeight) //checking that the item that has been gotten does not push the sack over the limit :(
+                    if (currentWeight + weightOfItem <= maxWeight) //checking that the item that has been gotten does not push the sack over the limit which would be saurrr sad :(
                     {
                         currentWeight += weightOfItem;
                         currentValue += valueOfItem;
@@ -70,22 +63,17 @@ public class Knapsack
             }
             optimalItems = optimalItemsChecker(currentWeight, maxWeight, currentValue, currentItems, optimalItems); //an abstracted method for finding the most optimal value
             lengthOfItems = bitIterator(lengthOfItems); //another abstracted method that is used to iterate through the bit patterns
-
-            if (lengthOfItems == null)
-            {
-                break;
-            }
         }
-        Knapsack.outputOptimalItems(optimalItems);
+        outputOptimalItems(optimalItems);
         return optimalItems;
     }
 
-    /*
-     * a method that iterates the current bitmap based on whether or not a zero is found
-     * @param lengthOfItems -> the lenght of items that is being used in findOptimalSubset
-     * @return new string or null -> if the variable is changed, return it, otherwise return null
-     */
-    private static String bitIterator(String lengthOfItems)
+   /*
+    * a method that iterates the current bitmap based on whether or not a zero is found
+    * @param lengthOfItems -> the lenght of items that is being used in findOptimalSubset
+    * @return new string or null -> if the variable is changed, return it, otherwise return null
+    */
+    private String bitIterator(String lengthOfItems)
     {
         StringBuilder stringBuilder = new StringBuilder(lengthOfItems);
 
@@ -104,7 +92,7 @@ public class Knapsack
         return null;
     }
 
-    /**
+   /*
     * a method that finds the most optimal items based on information from findOptimalSubset
     * @param currentWeight -> current weight of the current item(s)
     * @param maxWeight -> the maxmium weight that the user input
@@ -113,11 +101,11 @@ public class Knapsack
     * @param optimalItems -> a set of all the optimal items
     * @return optimalItems -> a set of all the optimal items
     */
-    private static Set<KnapsackItem> optimalItemsChecker(int currentWeight, int maxWeight, int currentValue, Set<KnapsackItem> currentItems, Set<KnapsackItem> optimalItems)
+    private Set<KnapsackItem> optimalItemsChecker(int currentWeight, int maxWeight, int currentValue, Set<KnapsackItem> currentItems, Set<KnapsackItem> optimalItems)
     {
         if (currentWeight <= maxWeight && currentValue > bestValue) //if its less than the sack and greater than the best value...
         {
-            bestValue = currentValue; //this is the reason that the best value cannot be a local variable
+            bestValue = currentValue;
             optimalItems = new HashSet<>(currentItems); //... make it the optimal items
         }
         return optimalItems;
@@ -127,7 +115,7 @@ public class Knapsack
     * a method that prints out the optimal items
     * @param optimalItems
     */
-    private static void outputOptimalItems(Set<KnapsackItem> optimalItems)
+    private void outputOptimalItems(Set<KnapsackItem> optimalItems)
     {
         int totalWeight = 0;
         int totalValue = 0;
@@ -147,7 +135,7 @@ public class Knapsack
     * a method that takes the length of the items list and returns a string of zeroes to be added upon
     * return lengthOfItemsStored -> length of the list in zeroes.
     */
-    private static String findStartingLength()
+    private String findStartingLength()
     {
         String lengthOfItems = "0";
 
@@ -157,34 +145,4 @@ public class Knapsack
         }
         return lengthOfItems;
     }
-
-    /*
-    public static int ensureValidWeight(int weight)
-    {
-        Scanner input = new Scanner(System.in);
-
-        while (true) //loops infinetely until the weight and value are valid
-        {
-            try
-            {
-                weight = Integer.parseInt(weight);
-            }
-            catch (Exception e)
-            {
-
-            }
-            if (weight / 1 != weight)
-            {
-                System.out.println("The value and the weight both have to be valid integers: ");
-                weight = input.nextInt();
-            }
-            else
-            {
-                break; //if there is nothing to fix, just retun the original value
-            }
-        }
-        input.close();
-        return weight;
-    }
-    */
 }
