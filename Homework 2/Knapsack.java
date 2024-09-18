@@ -8,7 +8,7 @@ import java.util.*;
 public class Knapsack
 {
     private final List<KnapsackItem> items = new ArrayList<>();
-    private int bestValue = 0; //best value is a class variable because its state needs to be persisted across methods (findOptimalSubset -> optimalItemsChecker)
+    private int bestValue = 0;
     private int maxWeight;
 
    /*
@@ -61,7 +61,73 @@ public class Knapsack
             optimalItems = optimalItemsChecker(currentWeight, maxWeight, currentValue, currentItems, optimalItems); //an abstracted method for finding the most optimal value
             bitmapForNumberOfItems = bitIterator(bitmapForNumberOfItems); //another abstracted method that is used to iterate through the bit patterns
         }
-        outputOptimalItems(optimalItems);
+        return optimalItems;
+    }
+
+   /*
+    * a method that prints out the optimal items
+    * @param optimalItems
+    */
+    public void outputOptimalItems(Set<KnapsackItem> optimalItems)
+    {
+        for (KnapsackItem item : optimalItems)
+        {
+            System.out.println(item.getDescriptor());
+        }
+    }
+
+   /*
+    * a method that takes the length of the items list and returns a string of zeroes to be added upon
+    * return bitmapForNumberOfItemsStored -> length of the list in zeroes.
+    */
+    private String findStartingLength()
+    {
+        String bitmapForNumberOfItems = "0";
+
+        for (int i = 0; i < items.size(); i++)
+        {
+            bitmapForNumberOfItems += "0"; //for every item in the items arraylist, add a zero, creating a bitmap
+        }
+        return bitmapForNumberOfItems;
+    }
+
+   /*
+    * a helper method that performs validation for the whether or not the addition of a new item puts the weight of the sack over the limit
+    * @param currentWeight -> weight of the current items
+    * @param weightOfItem -> weight of the new items
+    * @param currentValue -> value of the current items
+    * @param valueOfItem -> value of the the new item
+    * @param item -> the item object
+    * @param currentItems -> a set of the current items
+    * @return a new array containing the curent weight and the current value
+    */
+    private int[] weightChecker(int currentWeight, int weightOfItem, int currentValue, int valueOfItem, KnapsackItem item, Set<KnapsackItem> currentItems)
+    {
+        if (currentWeight + weightOfItem <= maxWeight) //checking that the item that has been gotten does not push the sack over the limit
+        {
+            currentWeight += weightOfItem;
+            currentValue += valueOfItem;
+            currentItems.add(item);
+        }
+        return new int[]{currentWeight, currentValue}; //have to create an array with both of these values so that they can be reutrned together
+    }
+
+   /*
+    * a method that finds the most optimal items based on information from findOptimalSubset
+    * @param currentWeight -> current weight of the current item(s)
+    * @param maxWeight -> the maxmium weight that the user input
+    * @param currentValue -> the current value of the current item(s)
+    * @param currentItems -> a set of all the current items
+    * @param optimalItems -> a set of all the optimal items
+    * @return optimalItems -> a set of all the optimal items
+    */
+    private Set<KnapsackItem> optimalItemsChecker(int currentWeight, int maxWeight, int currentValue, Set<KnapsackItem> currentItems, Set<KnapsackItem> optimalItems)
+    {
+        if (currentWeight <= maxWeight && currentValue > bestValue) //if its less than the sack weight and greater than the best value...
+        {
+            bestValue = currentValue;
+            optimalItems = new HashSet<>(currentItems); //... make the current items the optimal items.
+        }
         return optimalItems;
     }
 
@@ -87,70 +153,5 @@ public class Knapsack
             }
         }
         return null; //if it is entirely ones, then just return null
-    }
-
-   /*
-    * a method that finds the most optimal items based on information from findOptimalSubset
-    * @param currentWeight -> current weight of the current item(s)
-    * @param maxWeight -> the maxmium weight that the user input
-    * @param currentValue -> the current value of the current item(s)
-    * @param currentItems -> a set of all the current items
-    * @param optimalItems -> a set of all the optimal items
-    * @return optimalItems -> a set of all the optimal items
-    */
-    private Set<KnapsackItem> optimalItemsChecker(int currentWeight, int maxWeight, int currentValue, Set<KnapsackItem> currentItems, Set<KnapsackItem> optimalItems)
-    {
-        if (currentWeight <= maxWeight && currentValue > bestValue) //if its less than the sack weight and greater than the best value...
-        {
-            bestValue = currentValue;
-            optimalItems = new HashSet<>(currentItems); //... make the current items the optimal items.
-        }
-        return optimalItems;
-    }
-
-   /*
-    * a method that prints out the optimal items
-    * @param optimalItems
-    */
-    private void outputOptimalItems(Set<KnapsackItem> optimalItems)
-    {
-        int totalWeight = 0;
-        int totalValue = 0;
-
-        for (KnapsackItem item : optimalItems)
-        {
-            totalWeight += item.getWeight();
-            totalValue += item.getValue();
-            System.out.println(item.getDescriptor());
-        }
-
-        System.out.println("Total weight: " + totalWeight);
-        System.out.println("Total value: " + totalValue);
-    }
-
-   /*
-    * a method that takes the length of the items list and returns a string of zeroes to be added upon
-    * return bitmapForNumberOfItemsStored -> length of the list in zeroes.
-    */
-    private String findStartingLength()
-    {
-        String bitmapForNumberOfItems = "0";
-
-        for (int i = 0; i < items.size(); i++)
-        {
-            bitmapForNumberOfItems += "0";
-        }
-        return bitmapForNumberOfItems;
-    }
-
-    private int[] weightChecker(int currentWeight, int weightOfItem, int currentValue, int valueOfItem, KnapsackItem item, Set<KnapsackItem> currentItems)
-    {
-        if (currentWeight + weightOfItem <= maxWeight) //checking that the item that has been gotten does not push the sack over the limit
-        {
-            currentWeight += weightOfItem;
-            currentValue += valueOfItem;
-            currentItems.add(item);
-        }
-        return new int[]{currentWeight, currentValue}; //have to create an array with both of these values so that they can be reutrned together
     }
 }

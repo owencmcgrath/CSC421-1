@@ -11,4 +11,13 @@ The timings I received were as follows:
 29 | 95491
 30 | 191429
 
-For each iteration, the time it takes to perform the brute-force generation for the Knapsack method roughly doubles, which is in accordance with the 2^n algorithm. This is because the number of subsets for the Knapsack prolem is 2^n and since every subset must be to find the best value, the entire time complexity is 2^n.
+For each iteration, the time it takes to perform the brute-force generation for the Knapsack method roughly doubles, which is in accordance with the 2^n algorithm. This is because the number of subsets for the Knapsack problem is 2^n and since every subset must be tested to find the best value, the entire time complexity is 2^n.
+
+If you perform the simple calculation of:
+2^5 -> 32
+2^6 -> 64
+2^7 -> 128
+2^8 -> 256
+2^9 -> 512
+2^10 -> 1024
+you can see that each time an upward iteration happens, the size doubles, which is roughly what happens in my program.
