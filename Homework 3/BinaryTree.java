@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -133,7 +133,7 @@ public class BinaryTree<T> {
         if (this.root == null) {
           return "[]";
         }
-        String recStr = this.toString(this.root);
+        String recStr = this.toString(this.root); //recString means recursive string duh
         return "[" + recStr.substring(0,recStr.length()-1) + "]";
     }
     private String toString(TreeNode<T> current) {
@@ -145,6 +145,30 @@ public class BinaryTree<T> {
                this.toString(current.getRight());
     }
 
+    /*
+    //public List<TreeNode<T>> asList()
+    {
+        //List<TreeNode<T>> contentsOfTree = new List<TreeNode<T>>(); //linkedlist for O(1) sets since ewe are adding and not reading
+
+        if (this.root == null)
+        {
+            return null;
+        }
+        //contentsOfTree = this.asList(this.root);
+        //return contentsOfTree;
+    }
+
+    private List<TreeNode<T>> asList(TreeNode<T> current)
+    {
+        if (current == null)
+        {
+          return null;
+        }
+        return this.asList(current.getLeft()) +
+               //current.getData().asList() + "," +
+               this.asList(current.getRight());
+    }
+*/
 
     ////////////////////////////////////////////////////////////////////////////
     /// FOR TESTING PURPOSES

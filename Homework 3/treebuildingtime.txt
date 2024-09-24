@@ -54,3 +54,31 @@ Double until this size: 10000000
 
 BST + Sorted
 In the case of sorted data, the BST will produce O(N^2) because the data will form an unbalanced chain. This is shown in the timings as each double in problem size results in a double of timing:
+
+Enter the initial tree size: 10
+Double until this size: 1000000
+(T)reeSet or (B)inarySearchTree? B
+(R)andom or (S)orted data? S
+10 0
+20 0
+40 0
+80 1
+160 1
+320 2
+640 5
+1280 10
+2560 35
+5120 142
+10240 546
+20480 2134
+40960 8299
+Exception in thread "main" java.lang.StackOverflowError
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+	at BinarySearchTree.add(BinarySearchTree.java:25)
+
+This gets so large that it eventually crashes.
