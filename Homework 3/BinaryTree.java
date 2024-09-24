@@ -2,124 +2,153 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Generic class that implements a binary tree structure.
- *   @author Dave Reed
- *   @version 8/30/24
- */
-public class BinaryTree<T> {
-    protected TreeNode<T> root;
+* Generic class that implements a binary tree structure.
+*   @author Dave Reed, Owen McGrath
+*   @version 8/30/24
+*/
+public class BinaryTree<T>
+{
+    protected TreeNode<T> root; //the root is defined as a TreeNode class
 
     /**
      * Constructs an empty binary tree.
      */
-    public BinaryTree() {
-        this.root = null;
+    public BinaryTree()
+    {
+        this.root = null; //immediately set the root to a null value
     }
 
     /**
-     * Adds a value to the binary tree (at a random  location).
-     *   @param value the value to be added
-     */
-    public void add(T value) {
+    * Adds a value to the binary tree (at a random  location).
+    *   @param value the value to be added
+    */
+    public void add(T value)
+    {
         this.root = this.add(this.root, value);
     }
-    private TreeNode<T> add(TreeNode<T> current, T value) {
-        if (current == null) {
-            current = new TreeNode<T>(value, null, null);
+
+    private TreeNode<T> add(TreeNode<T> current, T value)
+    {
+        if (current == null) //if the current value is null...
+        {
+            current = new TreeNode<T>(value, null, null); //... create a new tree node with a ?value?
         }
-        else if (Math.random() < 0.5) {
+        //randomly choose which side the value is added to;
+        else if (Math.random() < 0.5)
+        {
             current.setLeft(this.add(current.getLeft(), value));
         }
-        else {
+        else
+        {
             current.setRight(this.add(current.getRight(), value));
         }
         return current;
     }
 
     /**
-     * Determines the size of the binary tree.
-     *   @return the size (number of nodes in the tree)
-     */
-    public int size() {
+    * Determines the size of the binary tree.
+    *   @return the size (number of nodes in the tree)
+    */
+    public int size()
+    {
         return this.size(this.root);
     }
-    private int size(TreeNode<T> current) {
-        if (current == null) {
+
+    private int size(TreeNode<T> current)
+    {
+        if (current == null)
+        {
             return 0;
         }
-        else {
-            return this.size(current.getLeft()) +
-                   this.size(current.getRight()) + 1;
+        else
+        {
+            return this.size(current.getLeft()) + this.size(current.getRight()) + 1; //recursivley get the left and the right size and then add one.
         }
     }
 
     /**
-     * Determines the size of the binary tree.
-     *   @return the size (number of nodes in the tree)
-     */
-    public int height() {
+    * Determines the size of the binary tree.
+    *   @return the size (number of nodes in the tree)
+    */
+    public int height()
+    {
         return this.height(this.root);
     }
-    private int height(TreeNode<T> current) {
-        if (current == null) {
+    private int height(TreeNode<T> current)
+    {
+        if (current == null)
+        {
             return 0;
         }
-        else {
-            return 1 + Math.max(this.height(current.getLeft()),
-                                this.height(current.getRight()));
+        else
+        {
+            return 1 + Math.max(this.height(current.getLeft()), this.height(current.getRight())); //gets the height of the right tree and the left and takes the max plus one.
         }
     }
     /**
-     * Determines whether the tree contains a particular value.
-     *   @param value the value to be searched for
-     *   @return true if value is in the tree, otherwise false
-     */
-    public boolean contains(T value) {
+    * Determines whether the tree contains a particular value.
+    *   @param value the value to be searched for
+    *   @return true if value is in the tree, otherwise false
+    */
+    public boolean contains(T value)
+    {
         return this.contains(this.root, value);
     }
-    private  boolean contains(TreeNode<T> current, T value) {
-        if (current == null) {
+
+    private  boolean contains(TreeNode<T> current, T value)
+    {
+        if (current == null)
+        {
             return false;
         }
-        else {
-            return value.equals(current.getData()) ||
-                   this.contains(current.getLeft(), value) ||
-                   this.contains(current.getRight(), value);
+        else
+        {
+            return value.equals(current.getData())||this.contains(current.getLeft(), value)||this.contains(current.getRight(), value);
         }
     }
 
     /**
-     * Removes one occurrence of the specified value.
-     *   @param value the value to be removed
-     *   @return true if the value was found and removed, else false
-     */
-    public boolean remove(T value) {
-        if (!this.contains(value)) {
+    * Removes one occurrence of the specified value.
+    *   @param value the value to be removed
+    *   @return true if the value was found and removed, else false
+    */
+    public boolean remove(T value)
+    {
+        if (!this.contains(value))
+        {
             return false;
         }
-        else {
+        else
+        {
             this.root = this.remove(this.root, value);
             return true;
         }
     }
-    private TreeNode<T> remove(TreeNode<T> current, T value) {
-        if (value.equals(current.getData())) {
-            if (current.getLeft() == null) {
+
+    private TreeNode<T> remove(TreeNode<T> current, T value)
+    {
+        if (value.equals(current.getData()))
+        {
+            if (current.getLeft() == null)
+            {
                 current = current.getRight();
             }
             else {
                 TreeNode<T> righty = current.getLeft();
-                while (righty.getRight() != null) {
+                while (righty.getRight() != null)
+                {
                     righty = righty.getRight();
                 }
                 current.setData(righty.getData());
                 current.setLeft(this.remove(current.getLeft(), current.getData()));
             }
         }
-        else if (this.contains(current.getLeft(), value)) {
+        else if (this.contains(current.getLeft(), value))
+        {
             current.setLeft(this.remove(current.getLeft(), value));
         }
-        else {
+        else
+        {
             current.setRight(this.remove(current.getRight(), value));
         }
         return current;
@@ -129,15 +158,20 @@ public class BinaryTree<T> {
      * Converts the tree to a String using an inorder traversal.
      *   @return the String representation of the tree.
      */
-    public String toString() {
-        if (this.root == null) {
+    public String toString()
+    {
+        if (this.root == null)
+        {
           return "[]";
         }
-        String recStr = this.toString(this.root); //recString means recursive string duh
+        String recStr = this.toString(this.root); //recString means recursive string
         return "[" + recStr.substring(0,recStr.length()-1) + "]";
     }
-    private String toString(TreeNode<T> current) {
-        if (current == null) {
+
+    private String toString(TreeNode<T> current)
+    {
+        if (current == null)
+        {
           return "";
         }
         return this.toString(current.getLeft()) +
@@ -145,36 +179,37 @@ public class BinaryTree<T> {
                this.toString(current.getRight());
     }
 
-    /*
-    //public List<TreeNode<T>> asList()
+    public List<TreeNode<T>> asList()
     {
-        //List<TreeNode<T>> contentsOfTree = new List<TreeNode<T>>(); //linkedlist for O(1) sets since ewe are adding and not reading
-
         if (this.root == null)
         {
-            return null;
+            return new LinkedList<>;
         }
-        //contentsOfTree = this.asList(this.root);
-        //return contentsOfTree;
+        return this.asList(this.root);
     }
 
     private List<TreeNode<T>> asList(TreeNode<T> current)
     {
+        List<TreeNode<T>> contentsOfTree = new LinkedList<>(); //linkedlist for O(1) sets since ewe are adding and not getting
+
         if (current == null)
         {
-          return null;
+          return contentsOfTree;
         }
-        return this.asList(current.getLeft()) +
-               //current.getData().asList() + "," +
-               this.asList(current.getRight());
+
+        contentsOfTree.addAll(this.asList(current.getLeft())); //have to use add all because we aer adding a collection, not just a single elemen
+        contentsOfTree.add(current); //whihc is why we get away with it here
+        contentsOfTree.addAll(this.asList(current.getRight()));
+
+        return contentsOfTree;
     }
-*/
 
     ////////////////////////////////////////////////////////////////////////////
     /// FOR TESTING PURPOSES
     ////////////////////////////////////////////////////////////////////////////
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         BinaryTree<Integer> tree = new BinaryTree<Integer>();
         tree.add(7);
         tree.add(2);

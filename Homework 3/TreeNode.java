@@ -7,6 +7,8 @@ public class TreeNode<T> {
     private T data;
     private TreeNode<T> left;
     private TreeNode<T> right;
+    private int size;
+    private int height;
 
     /**
      * Constructs a node with the specified contents.
@@ -66,5 +68,18 @@ public class TreeNode<T> {
      */
     public void setRight(TreeNode<T> newRight) {
         this.right = newRight;
+    }
+
+    public int getSize(int size)
+    {
+        this.size = size;
+        size = this.getLeft().getData() + this.getRight().getData() + 1;
+        return size;
+    }
+
+    public int getHeight(int height)
+    {
+        this.height = height;
+        return height;
     }
 }
