@@ -1,0 +1,56 @@
+TreeSet + Random Sorting or TreeSet + Sorted Data
+Due to automatic balancing, this would be O(N Log N) in either case. This is shown in the timings as each doubling in the problem size shows a little more than double in the timings:
+Enter the initial tree size: 10
+Double until this size: 10000000
+(T)reeSet or (B)inarySearchTree? T
+(R)andom or (S)orted data? R
+10 0
+20 0
+40 0
+80 0
+160 1
+320 1
+640 2
+1280 2
+2560 2
+5120 2
+10240 5
+20480 7
+40960 11
+81920 23
+163840 58
+327680 147
+655360 417
+1310720 1083
+2621440 2347
+5242880 6209
+
+BST+Random
+This would be O(N Log N) because random data ensures that the tree is not built in one long line. This is shown in the timings because each iteration is a bit more than double the previous.
+Enter the initial tree size: 10
+Double until this size: 10000000
+(T)reeSet or (B)inarySearchTree? B
+(R)andom or (S)orted data? R
+10 0
+20 0
+40 1
+80 0
+160 1
+320 0
+640 1
+1280 1
+2560 1
+5120 2
+10240 4
+20480 7
+40960 11
+81920 22
+163840 51
+327680 145
+655360 419
+1310720 974
+2621440 2494
+5242880 6414
+
+BST + Sorted
+In the case of sorted data, the BST will produce O(N^2) because the data will form an unbalanced chain. This is shown in the timings as each double in problem size results in a double of timing:
