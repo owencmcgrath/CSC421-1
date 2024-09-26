@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,7 +133,8 @@ public class BinaryTree<T>
             {
                 current = current.getRight();
             }
-            else {
+            else
+            {
                 TreeNode<T> righty = current.getLeft();
                 while (righty.getRight() != null)
                 {
@@ -183,14 +184,14 @@ public class BinaryTree<T>
     {
         if (this.root == null)
         {
-            return new LinkedList<>;
+            return new ArrayList<>(); //return an empty
         }
         return this.asList(this.root);
     }
 
     private List<TreeNode<T>> asList(TreeNode<T> current)
     {
-        List<TreeNode<T>> contentsOfTree = new LinkedList<>(); //linkedlist for O(1) sets since ewe are adding and not getting
+        List<TreeNode<T>> contentsOfTree = new ArrayList<>(); //linkedlist for O(1) sets since ewe are adding and not getting
 
         if (current == null)
         {
