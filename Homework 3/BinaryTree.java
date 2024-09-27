@@ -42,6 +42,7 @@ public class BinaryTree<T>
         {
             current.setRight(this.add(current.getRight(), value));
         }
+        current.updateSizeAndHeight();
         return current;
     }
 
@@ -152,6 +153,7 @@ public class BinaryTree<T>
         {
             current.setRight(this.remove(current.getRight(), value));
         }
+        current.updateSizeAndHeight();
         return current;
     }
 
