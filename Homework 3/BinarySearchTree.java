@@ -1,60 +1,113 @@
+import java.util.List;
+import java.util.ArrayList;
+
 /**
- * Generic class that implements a binary search tree, building upon the
- * existing BinaryTree class.
- *   @param <T> the type of value stored, must be Comparable<T>
- *   @author Dave Reed
- *   @version 8/30/24
- */
-public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTree<T> {
+* Generic class that implements a binary search tree, building upon the
+* existing BinaryTree class.
+*   @param <T> the type of value stored, must be Comparable<T>
+*   @author Dave Reed, Owen McGrath
+*   @version 8/30/24
+*/
+public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTree<T>
+{
     /**
-     * Overrides the super.add method to add according to the BST property.
-     *   @param value the value to be added to the tree
-     */
-    public void add(T value) {
+    * Overrides the super.add method to add according to the BST property.
+    *   @param value the value to be added to the tree
+    */
+    public void add(T value)
+    {
         this.root = this.add(this.root, value);
+        
+        if (this.height() > (1 + Math.log(this.size() / Math.log(2))))
+        {
+            this.rebalance();
+        }
     }
-    private TreeNode<T> add(TreeNode<T> current, T value) {
-        if (current == null) {
+    
+    private TreeNode<T> add(TreeNode<T> current, T value)
+    {
+        if (current == null)
+        {
             return new TreeNode<T>(value, null, null);
         }
 
-        if (value.compareTo(current.getData()) < 0) {
+        if (value.compareTo(current.getData()) < 0)
+        {
             current.setLeft(this.add(current.getLeft(), value));
         }
-        else {
+        else
+        {
             current.setRight(this.add(current.getRight(), value));
         }
+        
         return current;
     }
 
     /**
-     * Overrides the super.contains method to take advantage of binary search.
-     *   @param value the value to be searched for
-     *   @return true if that value is in the tree, otherwise false
-     */
-    public boolean contains(T value) {
+    * Overrides the super.contains method to take advantage of binary search.
+    *   @param value the value to be searched for
+    *   @return true if that value is in the tree, otherwise false
+    */
+    public boolean contains(T value)
+    {
         return this.contains(this.root, value);
     }
-    private boolean contains(TreeNode<T> current, T value) {
-        if (current == null) {
+    
+    private boolean contains(TreeNode<T> current, T value)
+    {
+        if (current == null)
+        {
             return false;
         }
-        else if (value.equals(current.getData())) {
+        else if (value.equals(current.getData()))
+        {
                 return true;
         }
-        else if (value.compareTo(current.getData()) < 0) {
+        else if (value.compareTo(current.getData()) < 0)
+        {
             return this.contains(current.getLeft(), value);
         }
-        else {
+        else
+        {
             return this.contains(current.getRight(), value);
         }
+    }
+
+    private void rebalance()
+    {
+        List<Treenode<T>> sortedElements = this.asList(); //creates a new list of sorted elements
+        List<T> values = new ArrayList<>(); //list to be added to
+
+        //TODO: ask if this can be improved upon since this will be O(N)
+        for (TreeNode<T> node : sortedElements) //for every node in the sorted elements...
+        {
+            values.add(node.getData()); //...add the value into values list
+        }
+        
+        this.root = buildBalancedTree(values, 0, values.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)
+    }
+
+    private TreeNode<T> buildBalancedTree(List<T> sortedElements, int start, int end)
+    {
+        if (start > end) //base case, if the start value is bigger than the end value, then there is no need to parse
+        {
+            return null;
+        }
+        
+        int midpoint = (start + end) / 2; //calcualte the midpoint, or the "root" of the entire tree
+        
+        TreeNode<T> node = new TreeNode<>(sortedElements.get(midpoint)); //store the midpoint as a node
+        node.setLeft(buildBalancedTree(sortedElements, start, midpoint - 1)); //from the sorted elements, build a balanced tree with everything from the left
+        node.setRight(buildBalancedTree(sortedElements, midpoint + 1, end)); //from the sorted elements, build a balanced tree with everything from the right
+        return node;
     }
 
     ////////////////////////////////////////////////////////////////////////////
     /// FOR TESTING PURPOSES
     ////////////////////////////////////////////////////////////////////////////
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
         tree.add(7);
         tree.add(2);

@@ -1,0 +1,24 @@
+In CSC 321, we considered basic implementations of binary trees and binary search trees. The following classes are variations of the versions from last semester: TreeNode.java, BinaryTree.java, BinarySearchTree.java. The BinaryTree class contains several methods that use a divide-and-conquer approach, including O(N) size and height methods. The BinarySearchTree class, which inherits from BinaryTree, overrides the add and contains methods with O(log N) decrease-and-conquer versions.
+
+Part 1: Tree building time (5%)
+The provided driver TreeTimer.java can be used to measure the amount of time it takes to build a tree, using either a TreeSet (red-black tree) or BinarySearchTree. Building a TreeSet should be O(N log N) in either case due to the automatic balancing. Building a BinarySearchTree from random data should (on average) be O(N log N), as the tree is expected to remain relatively balanced. Building a BinarySearchTree from sorted data, however, would be O(N2), resulting in a tree that is one long branch. Use the TreeTimer driver to confirm these expectations experimentally. In a text file, enter your timings (for TreeSet+Random, TreeSet+Sorted, BST+Random, BST+Sorted) along with a brief explanation as to their significance.
+
+Part 2: O(N) asList (15%)
+Add a method to the BinaryTree class named asList that takes no parameters and returns a List containing the contents of the tree (using an inorder traversal). This method should have the same recursive structure as the provided toString method. However, it should add items to a List instead of adding them to a String. Once you have completed and tested your method, modify your toString method to simply call asList and return the toString of that list.
+
+Part 3: O(1) size and height (30%)
+Currently, the size and height methods use divide-and-conquer recursion to traverse the tree and count the number of nodes. To avoid the O(N) cost of this approach, you are to modify TreeNode so that in addition to storing the data value and subtrees, each node also stores the sizes and heights of its subtrees (and those values are updated when either subtree is changed). With this information embedded in each node, it becomes simple to determine the size and height of any subtree in a tree. For example, suppose current referred to a node in a binary tree. If the left subtree of current contains 12 nodes, and the right subtree contains 14 nodes, then the tree rooted at current contains 1+12+14 = 27 nodes. Similarly, if the left subtree of current has height 6, and the right subtree has height 8, then the tree rooted at current has height 1+max(6,8) = 9. Add methods getSize and getHeight that use these new fields to calculate and return the size and height of the tree with that node as root.
+
+Note: all of the TreeNode methods should be O(1).
+
+Once you have made your modifications, reimplement the size and height methods in BinaryTree so that they call the new getSize and getHeight methods on the root to determine tree size and height in O(1) time.
+
+Part 4: BST balancing (45%)
+Currently, the add and remove methods do not guarantee that the tree remains balanced. In the case of a plain binary tree, balance is not an issue. But for binary search trees, imbalances lead to inefficiencies. In CSC 321, we considered algorithms for maintaining relative balance as items are removed (e.g., AVL trees, red-black trees). For this assignment, you will implement a simpler but less efficient algorithm.
+
+Modify your BinarySearchTree class to have a private method named rebalance. When called, the method will fully balance the tree by first converting it into a sorted list (using asList, then recursively (divide-and-conquer) rebuilding the tree from that list. The root of the new tree should be the middle element, the left subtree should be the binary search tree constructed out of the first half of the list, and the right subtree should be the binary search tree constructed out of the second half.
+
+Once you have thoroughly tested your rebalance method, modify the add method to check the height after the addition is completed. If the resulting height of the tree is greater than 1+log2(size), then the tree should be rebalanced. You will also need to override the remove method so that it also checks for imbalance and rebalances if necessary to ensure O(log N) height.
+
+Part 5: Tree building time revisited (5%)
+Use the TreeTimer driver to measure the performance of your modified BinarySearchTree class on both random and sorted data. Record the new timings and describe any differences from the timings in part 1. In particular, how do the times for your modified class compare with the previous times? How do the rates of growth compare?

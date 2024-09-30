@@ -1,6 +1,6 @@
 /**
 * Generic TreeNode class for storing nodes in a binary tree.
-*   @author Dave Reed
+*   @author Dave Reed, Owen McGrath
 *   @version 8/30/24
 */
 public class TreeNode<T>

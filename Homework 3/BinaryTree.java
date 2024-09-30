@@ -126,6 +126,7 @@ public class BinaryTree<T>
         }
     }
 
+    //@Override
     private TreeNode<T> remove(TreeNode<T> current, T value)
     {
         if (value.equals(current.getData()))
@@ -160,7 +161,7 @@ public class BinaryTree<T>
     /**
      * Converts the tree to a String using an inorder traversal.
      *   @return the String representation of the tree.
-     */
+    */
     public String toString()
     {
         if (this.root == null)
@@ -193,14 +194,14 @@ public class BinaryTree<T>
 
     private List<TreeNode<T>> asList(TreeNode<T> current)
     {
-        List<TreeNode<T>> contentsOfTree = new ArrayList<>(); //linkedlist for O(1) sets since ewe are adding and not getting
+        List<TreeNode<T>> contentsOfTree = new ArrayList<>();
 
         if (current == null)
         {
           return contentsOfTree;
         }
 
-        contentsOfTree.addAll(this.asList(current.getLeft())); //have to use add all because we aer adding a collection, not just a single elemen
+        contentsOfTree.addAll(this.asList(current.getLeft())); //have to use add all because we aer adding a collection, not just a single element
         contentsOfTree.add(current); //whihc is why we get away with it here
         contentsOfTree.addAll(this.asList(current.getRight()));
 
@@ -234,6 +235,5 @@ public class BinaryTree<T>
         System.out.println("size = " + tree.size());
         System.out.println(tree.contains(2) + " " + tree.contains(7)
                                             + " " + tree.contains(8));
-
     }
 }
