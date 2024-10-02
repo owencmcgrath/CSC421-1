@@ -55,7 +55,6 @@ public class BinaryTree<T>
         {   
             return 0;
         }
-        //System.out.println("Calculating size of the tree...");
         return this.root.getSize(); //this is stored in each TreeNode
     }
 
@@ -69,7 +68,6 @@ public class BinaryTree<T>
         {
             return 0;
         }
-        //System.out.println("Calculating height of the tree...");
         return this.root.getHeight(); //this is stored in each TreeNode
     }
 

@@ -74,13 +74,11 @@ public class TreeNode<T>
         {
             leftHeight = newLeft.getHeight();
             leftSize = newLeft.getSize();
-            //System.out.println("Setting left child: Height = " + leftHeight + ", Size = " + leftSize);
         }
         else
         {
             leftHeight = 0;
             leftSize = 0;
-            //System.out.println("Clearing left child: Height = " + leftHeight + ", Size = " + leftSize);
         }
     }
 
@@ -96,13 +94,11 @@ public class TreeNode<T>
         {
             rightHeight = newRight.getHeight();
             rightSize = newRight.getSize();
-            //System.out.println("Setting right child: Height = " + rightHeight + ", Size = " + rightSize);
         }
         else
         {
             rightHeight = 0;
             rightSize = 0;
-            //System.out.println("Clearing right child: Height = " + rightHeight + ", Size = " + rightSize);
         }
     }
 
@@ -112,7 +108,6 @@ public class TreeNode<T>
     */
     public int getSize()
     {
-        //System.out.println("Getting size: " + (leftSize + rightSize + 1));
         return leftSize + rightSize + 1;
     }
 
@@ -122,7 +117,6 @@ public class TreeNode<T>
     */
     public int getHeight()
     {
-        //System.out.println("Getting Height: " + (leftHeight + rightHeight + 1));
         return Math.max(leftHeight, rightHeight) + 1;
     }
 }
