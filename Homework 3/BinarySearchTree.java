@@ -18,12 +18,12 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         //System.out.println("Adding value: " + value);
         this.root = this.add(this.root, value);
-       //System.out.println("Current height after adding: " + this.height() + ", size: " + this.size());
+        //System.out.println("Current height after adding: " + this.height() + ", size: " + this.size());
         
-        if (this.height() > (1 + Math.log(this.size()) / Math.log(2)))
+        if (this.height() > (2 * Math.log(this.size()) / Math.log(2)))
         {
-            //System.out.println("Tree is unbalanced, rebalance triggered.");
-            this.rebalance();
+            //System.out.println("Tree is unbalanced from add, rebalance triggered.");
+            rebalance();
         }
     }
     
@@ -31,7 +31,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         if (current == null)
         {
-           // System.out.println("Creating new node for value: " + value);
+            //System.out.println("Creating new node for value: " + value);
             return new TreeNode<T>(value, null, null);
         }
 
@@ -44,7 +44,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
         }
         else
         {
-           // System.out.println("Going right to add value: " + value);
+            //System.out.println("Going right to add value: " + value);
             current.setRight(this.add(current.getRight(), value));
         }
         
@@ -65,22 +65,22 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         if (current == null)
         {
-           // System.out.println("Value " + value + " not found.");
+            //System.out.println("Value " + value + " not found.");
             return false;
         }
         else if (value.equals(current.getData()))
         {
-           //System.out.println("Value " + value + " found.");
+            //System.out.println("Value " + value + " found.");
             return true;
         }
         else if (value.compareTo(current.getData()) < 0)
         {
-           // System.out.println("Going left to find value: " + value);
+            //System.out.println("Going left to find value: " + value);
             return this.contains(current.getLeft(), value);
         }
         else
         {
-           // System.out.println("Going right to find value: " + value);
+            //System.out.println("Going right to find value: " + value);
             return this.contains(current.getRight(), value);
         }
     }
@@ -89,9 +89,9 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         //System.out.println("Rebalancing the tree...");
         List<T> sortedElements = this.asList(); //creates a new list of sorted elements
-       //System.out.println("Sorted elements: " + sortedElements);
-        this.root = buildBalancedTree(sortedElements, 0, sortedElements.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)
-    }
+        //System.out.println("Sorted elements: " + sortedElements);
+        this.root = buildBalancedTree(sortedElements, 0, sortedElements.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)   
+     }
 
     private TreeNode<T> buildBalancedTree(List<T> sortedElements, int start, int end)
     {
@@ -100,7 +100,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
             return null;
         }
         int midpoint = (start + end) / 2; //calcualte the midpoint, or the "root" of the entire tree
-       // System.out.println("Midpoint: " + sortedElements.get(midpoint));
+        //System.out.println("Midpoint: " + sortedElements.get(midpoint));
                 
         TreeNode<T> node = new TreeNode<T>(sortedElements.get(midpoint), null, null); //store the midpoint as a node
         node.setLeft(buildBalancedTree(sortedElements, start, midpoint - 1)); //from the sorted elements, build a balanced tree with everything from the left
@@ -115,10 +115,10 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
         boolean status = super.remove(value);
 
         //System.out.println("Updated Height: " + this.height() + ", Size: " + this.size());
-        if (this.height() > (1 + Math.log(this.size()) / Math.log(2)))
+        if (this.height() > (2 * Math.log(this.size()) / Math.log(2)))
         {
-            //System.out.println("Rebalancing tree...");
-            this.rebalance();
+            //System.out.println("Rebalancing tree from remove...");
+            rebalance();
         }
         return status;
     }

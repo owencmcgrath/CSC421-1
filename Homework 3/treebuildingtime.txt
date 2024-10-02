@@ -82,3 +82,5 @@ Exception in thread "main" java.lang.StackOverflowError
 	at BinarySearchTree.add(BinarySearchTree.java:25)
 
 This gets so large that it eventually crashes.
+
+n^2/log(n) for sorted

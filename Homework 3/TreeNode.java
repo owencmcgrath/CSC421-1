@@ -12,7 +12,7 @@ public class TreeNode<T>
 	private int rightSize;
 	private int leftHeight;
 	private int rightHeight;
-
+	
     /**
     * Constructs a node with the specified contents.
     * @param d the data value to be stored
@@ -24,28 +24,6 @@ public class TreeNode<T>
         this.data = d;
         this.setLeft(l);
         this.setRight(r);
-
-        if (l != null)
-        {
-            this.leftSize = l.getSize();
-            this.leftHeight = l.getHeight();
-        } 
-        else
-        {
-            this.leftSize = 0;
-            this.leftHeight = 0;
-        }
-        
-        if (r != null)
-        {
-            this.rightSize = r.getSize();
-            this.rightHeight = r.getHeight();
-        } 
-        else
-        {
-            this.rightSize = 0;
-            this.rightHeight = 0;
-        }
     }
 
     /**

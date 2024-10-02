@@ -148,19 +148,9 @@ public class BinaryTree<T>
     * @return the String representation of the tree.
     */
     public String toString()
-    {
+    {        
         List<T> listRepresentation = this.asList();
-        System.out.println(listRepresentation);
         return listRepresentation.toString();
-    }
-
-    private String toString(TreeNode<T> current)
-    {
-        if (current == null) //if the root is empty, then there is no need to parse
-        {
-            return "";
-        }
-        return this.toString(current.getLeft()) + current.getData().toString() + "," + this.toString(current.getRight()); //the tree as a string
     }
 
     /**
@@ -169,27 +159,24 @@ public class BinaryTree<T>
     */
     public List <T> asList()
     {
+        List<T> contentsOfTree = new ArrayList<>(); //arraylist for O(1) gets
+    
         if (this.root == null)
         {
-            return new ArrayList<>(); //return an empty
+            return  contentsOfTree; //return an empty
         }
-        return this.asList(this.root);
+        this.asList(this.root, contentsOfTree);
+        return contentsOfTree;
     }
 
-    private List <T> asList(TreeNode<T> current)
+    private void asList(TreeNode<T> current, List<T> contentsOfTree)
     {
-        List<T> contentsOfTree = new ArrayList<>(); //arraylist for O(1) gets
-
-        if (current == null) //if the root is null, then there is no need to parse
+        if (current != null) //if the root is null, then there is no need to parse
         {
-            return contentsOfTree;
+            this.asList(current.getLeft(), contentsOfTree); //have to use add all because we aer adding a collection, not just a single element
+            contentsOfTree.add(current.getData()); //whihc is why we get away with it here
+            this.asList(current.getRight(), contentsOfTree);
         }
-
-        contentsOfTree.addAll(this.asList(current.getLeft())); //have to use add all because we aer adding a collection, not just a single element
-        contentsOfTree.add(current.getData()); //whihc is why we get away with it here
-        contentsOfTree.addAll(this.asList(current.getRight()));
-
-        return contentsOfTree;
     }
 
     ////////////////////////////////////////////////////////////////////////////
