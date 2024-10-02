@@ -4,22 +4,25 @@ import java.util.ArrayList;
 /**
 * Generic class that implements a binary search tree, building upon the
 * existing BinaryTree class.
-*   @param <T> the type of value stored, must be Comparable<T>
-*   @author Dave Reed, Owen McGrath
-*   @version 8/30/24
+* @param <T> the type of value stored, must be Comparable<T>
+* @author Dave Reed, Owen McGrath
+* @version 8/30/24
 */
 public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTree<T>
 {
     /**
     * Overrides the super.add method to add according to the BST property.
-    *   @param value the value to be added to the tree
+    * @param value the value to be added to the tree
     */
     public void add(T value)
     {
+        //System.out.println("Adding value: " + value);
         this.root = this.add(this.root, value);
+       //System.out.println("Current height after adding: " + this.height() + ", size: " + this.size());
         
-        if (this.height() > (1 + Math.log(this.size() / Math.log(2))))
+        if (this.height() > (1 + Math.log(this.size()) / Math.log(2)))
         {
+            //System.out.println("Tree is unbalanced, rebalance triggered.");
             this.rebalance();
         }
     }
@@ -28,15 +31,20 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         if (current == null)
         {
+           // System.out.println("Creating new node for value: " + value);
             return new TreeNode<T>(value, null, null);
         }
 
+        //System.out.println("Current node: " + current.getData());
+
         if (value.compareTo(current.getData()) < 0)
         {
+            //System.out.println("Going left to add value: " + value);
             current.setLeft(this.add(current.getLeft(), value));
         }
         else
         {
+           // System.out.println("Going right to add value: " + value);
             current.setRight(this.add(current.getRight(), value));
         }
         
@@ -45,8 +53,8 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
 
     /**
     * Overrides the super.contains method to take advantage of binary search.
-    *   @param value the value to be searched for
-    *   @return true if that value is in the tree, otherwise false
+    * @param value the value to be searched for
+    * @return true if that value is in the tree, otherwise false
     */
     public boolean contains(T value)
     {
@@ -57,34 +65,32 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         if (current == null)
         {
+           // System.out.println("Value " + value + " not found.");
             return false;
         }
         else if (value.equals(current.getData()))
         {
-                return true;
+           //System.out.println("Value " + value + " found.");
+            return true;
         }
         else if (value.compareTo(current.getData()) < 0)
         {
+           // System.out.println("Going left to find value: " + value);
             return this.contains(current.getLeft(), value);
         }
         else
         {
+           // System.out.println("Going right to find value: " + value);
             return this.contains(current.getRight(), value);
         }
     }
 
     private void rebalance()
     {
-        List<Treenode<T>> sortedElements = this.asList(); //creates a new list of sorted elements
-        List<T> values = new ArrayList<>(); //list to be added to
-
-        //TODO: ask if this can be improved upon since this will be O(N)
-        for (TreeNode<T> node : sortedElements) //for every node in the sorted elements...
-        {
-            values.add(node.getData()); //...add the value into values list
-        }
-        
-        this.root = buildBalancedTree(values, 0, values.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)
+        //System.out.println("Rebalancing the tree...");
+        List<T> sortedElements = this.asList(); //creates a new list of sorted elements
+       //System.out.println("Sorted elements: " + sortedElements);
+        this.root = buildBalancedTree(sortedElements, 0, sortedElements.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)
     }
 
     private TreeNode<T> buildBalancedTree(List<T> sortedElements, int start, int end)
@@ -93,13 +99,28 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
         {
             return null;
         }
-        
         int midpoint = (start + end) / 2; //calcualte the midpoint, or the "root" of the entire tree
-        
-        TreeNode<T> node = new TreeNode<>(sortedElements.get(midpoint)); //store the midpoint as a node
+       // System.out.println("Midpoint: " + sortedElements.get(midpoint));
+                
+        TreeNode<T> node = new TreeNode<T>(sortedElements.get(midpoint), null, null); //store the midpoint as a node
         node.setLeft(buildBalancedTree(sortedElements, start, midpoint - 1)); //from the sorted elements, build a balanced tree with everything from the left
         node.setRight(buildBalancedTree(sortedElements, midpoint + 1, end)); //from the sorted elements, build a balanced tree with everything from the right
         return node;
+    }
+
+    @Override
+    public boolean remove(T value)
+    {
+        //System.out.println("Removing node: " + value);
+        boolean status = super.remove(value);
+
+        //System.out.println("Updated Height: " + this.height() + ", Size: " + this.size());
+        if (this.height() > (1 + Math.log(this.size()) / Math.log(2)))
+        {
+            //System.out.println("Rebalancing tree...");
+            this.rebalance();
+        }
+        return status;
     }
 
     ////////////////////////////////////////////////////////////////////////////

@@ -3,16 +3,16 @@ import java.util.List;
 
 /**
 * Generic class that implements a binary tree structure.
-*   @author Dave Reed, Owen McGrath
-*   @version 8/30/24
+* @author Dave Reed, Owen McGrath
+* @version 8/30/24
 */
 public class BinaryTree<T>
 {
     protected TreeNode<T> root; //the root is defined as a TreeNode class
 
     /**
-     * Constructs an empty binary tree.
-     */
+    * Constructs an empty binary tree.
+    */
     public BinaryTree()
     {
         this.root = null; //immediately set the root to a null value
@@ -20,7 +20,7 @@ public class BinaryTree<T>
 
     /**
     * Adds a value to the binary tree (at a random  location).
-    *   @param value the value to be added
+    * @param value the value to be added
     */
     public void add(T value)
     {
@@ -42,54 +42,41 @@ public class BinaryTree<T>
         {
             current.setRight(this.add(current.getRight(), value));
         }
-        current.updateSizeAndHeight();
         return current;
     }
 
     /**
     * Determines the size of the binary tree.
-    *   @return the size (number of nodes in the tree)
+    * @return the size (number of nodes in the tree)
     */
     public int size()
     {
-        return this.size(this.root);
-    }
-
-    private int size(TreeNode<T> current)
-    {
-        if (current == null)
-        {
+        if (this.root == null)
+        {   
             return 0;
         }
-        else
-        {
-            return this.size(current.getLeft()) + this.size(current.getRight()) + 1; //recursivley get the left and the right size and then add one.
-        }
+        //System.out.println("Calculating size of the tree...");
+        return this.root.getSize(); //this is stored in each TreeNode
     }
 
     /**
     * Determines the size of the binary tree.
-    *   @return the size (number of nodes in the tree)
+    * @return the size (number of nodes in the tree)
     */
     public int height()
     {
-        return this.height(this.root);
-    }
-    private int height(TreeNode<T> current)
-    {
-        if (current == null)
+        if (this.root == null)
         {
             return 0;
         }
-        else
-        {
-            return 1 + Math.max(this.height(current.getLeft()), this.height(current.getRight())); //gets the height of the right tree and the left and takes the max plus one.
-        }
+        //System.out.println("Calculating height of the tree...");
+        return this.root.getHeight(); //this is stored in each TreeNode
     }
+
     /**
     * Determines whether the tree contains a particular value.
-    *   @param value the value to be searched for
-    *   @return true if value is in the tree, otherwise false
+    * @param value the value to be searched for
+    * @return true if value is in the tree, otherwise false
     */
     public boolean contains(T value)
     {
@@ -110,8 +97,8 @@ public class BinaryTree<T>
 
     /**
     * Removes one occurrence of the specified value.
-    *   @param value the value to be removed
-    *   @return true if the value was found and removed, else false
+    * @param value the value to be removed
+    * @return true if the value was found and removed, else false
     */
     public boolean remove(T value)
     {
@@ -126,7 +113,6 @@ public class BinaryTree<T>
         }
     }
 
-    //@Override
     private TreeNode<T> remove(TreeNode<T> current, T value)
     {
         if (value.equals(current.getData()))
@@ -154,36 +140,34 @@ public class BinaryTree<T>
         {
             current.setRight(this.remove(current.getRight(), value));
         }
-        current.updateSizeAndHeight();
         return current;
     }
 
     /**
-     * Converts the tree to a String using an inorder traversal.
-     *   @return the String representation of the tree.
+    * Converts the tree to a String using an inorder traversal.
+    * @return the String representation of the tree.
     */
     public String toString()
     {
-        if (this.root == null)
-        {
-          return "[]";
-        }
-        String recStr = this.toString(this.root); //recString means recursive string
-        return "[" + recStr.substring(0,recStr.length()-1) + "]";
+        List<T> listRepresentation = this.asList();
+        System.out.println(listRepresentation);
+        return listRepresentation.toString();
     }
 
     private String toString(TreeNode<T> current)
     {
-        if (current == null)
+        if (current == null) //if the root is empty, then there is no need to parse
         {
-          return "";
+            return "";
         }
-        return this.toString(current.getLeft()) +
-               current.getData().toString() + "," +
-               this.toString(current.getRight());
+        return this.toString(current.getLeft()) + current.getData().toString() + "," + this.toString(current.getRight()); //the tree as a string
     }
 
-    public List<TreeNode<T>> asList()
+    /**
+    * Converts the contents of the tree to a list
+    * @return contentsOfTree -> everything in the tree as a list
+    */
+    public List <T> asList()
     {
         if (this.root == null)
         {
@@ -192,17 +176,17 @@ public class BinaryTree<T>
         return this.asList(this.root);
     }
 
-    private List<TreeNode<T>> asList(TreeNode<T> current)
+    private List <T> asList(TreeNode<T> current)
     {
-        List<TreeNode<T>> contentsOfTree = new ArrayList<>();
+        List<T> contentsOfTree = new ArrayList<>(); //arraylist for O(1) gets
 
-        if (current == null)
+        if (current == null) //if the root is null, then there is no need to parse
         {
-          return contentsOfTree;
+            return contentsOfTree;
         }
 
         contentsOfTree.addAll(this.asList(current.getLeft())); //have to use add all because we aer adding a collection, not just a single element
-        contentsOfTree.add(current); //whihc is why we get away with it here
+        contentsOfTree.add(current.getData()); //whihc is why we get away with it here
         contentsOfTree.addAll(this.asList(current.getRight()));
 
         return contentsOfTree;

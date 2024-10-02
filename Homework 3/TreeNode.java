@@ -1,7 +1,7 @@
 /**
 * Generic TreeNode class for storing nodes in a binary tree.
 *   @author Dave Reed, Owen McGrath
-*   @version 8/30/24
+*   @version 8/30/24b
 */
 public class TreeNode<T>
 {
@@ -15,20 +15,42 @@ public class TreeNode<T>
 
     /**
     * Constructs a node with the specified contents.
-    *   @param d the data value to be stored
-    *   @param l the left child/subtree
-    *   @param r the right child/subtree
+    * @param d the data value to be stored
+    * @param l the left child/subtree
+    * @param r the right child/subtree
     */
     public TreeNode(T d, TreeNode<T> l, TreeNode<T> r)
     {
         this.data = d;
-        this.left = l;
-        this.right = r;
+        this.setLeft(l);
+        this.setRight(r);
+
+        if (l != null)
+        {
+            this.leftSize = l.getSize();
+            this.leftHeight = l.getHeight();
+        } 
+        else
+        {
+            this.leftSize = 0;
+            this.leftHeight = 0;
+        }
+        
+        if (r != null)
+        {
+            this.rightSize = r.getSize();
+            this.rightHeight = r.getHeight();
+        } 
+        else
+        {
+            this.rightSize = 0;
+            this.rightHeight = 0;
+        }
     }
 
     /**
     * Accessor method for the data value.
-    *   @return the data value stored in the node
+    * @return the data value stored in the node
     */
     public T getData()
     {
@@ -37,7 +59,7 @@ public class TreeNode<T>
 
     /**
     * Accessor method for the left child/subtree.
-    *   @return the left child/subtree
+    * @return the left child/subtree
     */
     public TreeNode<T> getLeft()
     {
@@ -46,7 +68,7 @@ public class TreeNode<T>
 
     /**
     * Accessor method for the right child/subtree.
-    *   @return the right child/subtree
+    * @return the right child/subtree
     */
     public TreeNode<T> getRight()
     {
@@ -55,7 +77,7 @@ public class TreeNode<T>
 
     /**
     * Setter method for changing the data value.
-    *   @param newData the new data value
+    * @param newData the new data value
     */
     public void setData(T newData)
     {
@@ -64,117 +86,65 @@ public class TreeNode<T>
 
     /**
     * Setter method for changing the left child/subtree.
-    *   @param newLeft the new left child/subtree
+    * @param newLeft the new left child/subtree
     */
     public void setLeft(TreeNode<T> newLeft)
     {
         this.left = newLeft;
+
+        if (newLeft != null)
+        {
+            leftHeight = newLeft.getHeight();
+            leftSize = newLeft.getSize();
+            //System.out.println("Setting left child: Height = " + leftHeight + ", Size = " + leftSize);
+        }
+        else
+        {
+            leftHeight = 0;
+            leftSize = 0;
+            //System.out.println("Clearing left child: Height = " + leftHeight + ", Size = " + leftSize);
+        }
     }
 
     /**
     * Setter method for changing the right child/subtree.
-    *   @param newRight the new right child/subtree
+    * @param newRight the new right child/subtree
     */
     public void setRight(TreeNode<T> newRight)
     {
         this.right = newRight;
-    }
-
-   	public int getLeftSize()
-	{
-    	return leftSize;
-	}
-
-    public int getRightSize()
-    {
-        return rightSize;
-    }
-
-    public int getLeftHeight()
-    {
-        return leftHeight;
-    }
-    public int getRightHeight()
-    {
-        return rightHeight;
+        
+        if (newRight != null)
+        {
+            rightHeight = newRight.getHeight();
+            rightSize = newRight.getSize();
+            //System.out.println("Setting right child: Height = " + rightHeight + ", Size = " + rightSize);
+        }
+        else
+        {
+            rightHeight = 0;
+            rightSize = 0;
+            //System.out.println("Clearing right child: Height = " + rightHeight + ", Size = " + rightSize);
+        }
     }
 
     /**
     * a method that calculates the size in O(1) time
     * @return size -> the height of the left and right subnodes
     */
-    public int size()
+    public int getSize()
     {
-        int size = 1; //start off with one since we will need it anyway
-        if (this.left != null)
-        {
-            size += this.left.size();
-        }
-
-        if (this.right != null)
-        {
-            size += this.right.size();
-        }
-        return size;
+        //System.out.println("Getting size: " + (leftSize + rightSize + 1));
+        return leftSize + rightSize + 1;
     }
 
     /**
     * a method that calculates the height of subnodes in O(1) and stores it in the node
     * @return height -> the height of the left and right subnodes
     */
-    public int height()
+    public int getHeight()
     {
-        if (this.left != null)
-        {
-            leftHeight += this.left.height();
-        }
-
-        if (this.right != null)
-        {
-            rightHeight += this.right.height();
-        }
+        //System.out.println("Getting Height: " + (leftHeight + rightHeight + 1));
         return Math.max(leftHeight, rightHeight) + 1;
     }
-
-    /**
-    * a method that is designed to update the left size, left height, right size, and right height
-    */
-	public void updateSizeAndHeight()
-	{
-        if (this.left != null)
-        {
-            this.leftSize = this.left.size();
-        }
-        else
-        {
-            this.leftSize = 0;
-        }
-
-        if (this.right != null)
-        {
-            this.rightSize = this.right.size();
-        }
-        else
-        {
-            this.rightSize = 0;
-        }
-
-        if (this.left != null)
-        {
-            this.leftHeight = this.left.height();
-        }
-        else
-        {
-            this.leftSize = 0;
-        }
-
-        if (this.right != null)
-        {
-            this.rightHeight = this.right.height();
-        }
-        else
-        {
-            this.rightHeight = 0;
-        }
-	}
 }
