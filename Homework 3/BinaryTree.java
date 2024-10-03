@@ -152,7 +152,7 @@ public class BinaryTree<T>
     }
 
     /**
-    * Converts the contents of the tree to a list
+    * Converts the contents of the tree to a list using in order traversal
     * @return contentsOfTree -> everything in the tree as a list
     */
     public List <T> asList()
@@ -171,9 +171,9 @@ public class BinaryTree<T>
     {
         if (current != null) //if the root is null, then there is no need to parse
         {
-            this.asList(current.getLeft(), contentsOfTree); //have to use add all because we aer adding a collection, not just a single element
-            contentsOfTree.add(current.getData()); //whihc is why we get away with it here
-            this.asList(current.getRight(), contentsOfTree);
+            this.asList(current.getLeft(), contentsOfTree); //recursively get the left tree 
+            contentsOfTree.add(current.getData()); //root
+            this.asList(current.getRight(), contentsOfTree); //recurvielsvey get the right tree
         }
     }
 

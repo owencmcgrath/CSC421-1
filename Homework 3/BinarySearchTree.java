@@ -5,7 +5,8 @@ import java.util.ArrayList;
 * Generic class that implements a binary search tree, building upon the
 * existing BinaryTree class.
 * @param <T> the type of value stored, must be Comparable<T>
-* @author Dave Reed, Owen McGrath
+* @author Dave Reed
+* @modifidedby Owen McGrath
 * @version 8/30/24
 */
 public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTree<T>
@@ -73,17 +74,22 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
         }
     }
 
+    /**
+    * Creates a new list of sorted elements and recursively builds a balanced tree.
+    */
     private void rebalance()
     {
         List<T> sortedElements = this.asList(); //creates a new list of sorted elements
         this.root = buildBalancedTree(sortedElements, 0, sortedElements.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)   
     }
 
-    private boolean isUnbalanced()
-    {
-        return this.height() > 2 * (Math.log(this.size()) / Math.log(2)) + 1;
-    }
-
+    /**
+    * Uses the list of sorted elements, a start point, and end point, to recursively build a balanced tree
+    * @param sortedElements -> a list of nodes, sorted via in order
+    * @param start -> the initial point in the lsit
+    * @param end -> the final point in the list
+    * @return node
+    */
     private TreeNode<T> buildBalancedTree(List<T> sortedElements, int start, int end)
     {
         if (start > end) //base case, if the start value is bigger than the end value, then there is no need to parse
@@ -98,6 +104,20 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
         return node;
     }
 
+    /**
+    * Uses an equation to calculate if the tree is unbalanced.
+    * @return 
+    */
+    private boolean isUnbalanced()
+    {
+        return this.height() > 2 * (Math.log(this.size()) / Math.log(2)) + 1;
+    }
+
+    /**
+    * Uses the remove method from BinaryTree to remove, but takes into account being unbalanced
+    * @param value -> item to remove
+    * @return status -> if it has been removed
+    */
     @Override
     public boolean remove(T value)
     {
