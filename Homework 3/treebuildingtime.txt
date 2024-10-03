@@ -83,4 +83,55 @@ Exception in thread "main" java.lang.StackOverflowError
 
 This gets so large that it eventually crashes.
 
-n^2/log(n) for sorted
+///////////////////////////////// AFTER CHANGES ///////////////////////////////////////////
+
+TreeSet - for both Random and Sorted data - will remain the same since no changes were made to that structure.
+
+BST + Random
+Due to the changes that we made, but storing the height and weight in the node O(1), converting the tree into a list, and then rebalancing when things were too uneven, this new method performs slightly better with the timings a little bit more than doubling whenever the size of the problem doubles.
+Enter the initial tree size: 10
+Double until this size: 10000000
+(T)reeSet or (B)inarySearchTree?  b
+(R)andom or (S)orted data? r
+10 13
+20 0
+40 0
+80 0
+160 0
+320 1
+640 0
+1280 0
+2560 1
+5120 1
+10240 3
+20480 4
+40960 10
+81920 17
+163840 46
+327680 86
+655360 215
+1310720 491
+2621440 1567
+5242880 4502
+
+BST + Sorted
+After the changes, sorted data is handled much more effectively, and the program now has a fighting chance to complete, albeit pretty slowly. The timings for this are n^2/log(n), which is because the data has to be rebalanced much more frequently.
+(T)reeSet or (B)inarySearchTree? B
+(R)andom or (S)orted data? S
+10 11
+20 0
+40 0
+80 1
+160 0
+320 1
+640 1
+1280 3
+2560 12
+5120 19
+10240 69
+20480 432
+40960 548
+81920 2256
+163840 7585
+327680 29353
+655360 107705
