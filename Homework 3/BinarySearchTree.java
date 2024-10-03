@@ -18,7 +18,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         this.root = this.add(this.root, value);
         
-        if (this.height() > 2 * (Math.log(this.size()) / Math.log(2)) + 1)
+        if (isUnbalanced())
         {
             rebalance();
         }
@@ -77,7 +77,12 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         List<T> sortedElements = this.asList(); //creates a new list of sorted elements
         this.root = buildBalancedTree(sortedElements, 0, sortedElements.size() - 1); //call this method, which takes the list, zero (as the start), and size minus one (as the end)   
-     }
+    }
+
+    private boolean isUnbalanced()
+    {
+        return this.height() > 2 * (Math.log(this.size()) / Math.log(2)) + 1;
+    }
 
     private TreeNode<T> buildBalancedTree(List<T> sortedElements, int start, int end)
     {
@@ -98,7 +103,7 @@ public class BinarySearchTree<T extends Comparable<? super T>> extends BinaryTre
     {
         boolean status = super.remove(value);
 
-        if (this.height() > 2 * (Math.log(this.size()) / Math.log(2)) + 1)
+        if (isUnbalanced())
         {
             rebalance();
         }
