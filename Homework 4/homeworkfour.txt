@@ -1,0 +1,63 @@
+CSC 421: Algorithm Design & Analysis
+Fall 2024
+
+HW4: Greedy Scheduling
+
+Consider the challenge of constructing a daily schedule given a (potentially large) set of event options. For example, a student planning his or her day might choose from the following possible events:
+
+ 
+ 0:00   7:30      Sleep
+ 0:00  10:20      Sleep in
+ 7:45   8:00      Shower
+ 8:00   8:45      Breakfast with friends
+ 8:10   8:40      Social Media
+ 8:50  10:30      Study for class
+11:00  12:15  REQ CSC 421
+12:30  13:45      Lunch
+12:30  13:30      Exercise 
+13:30  13:50      Power nap
+14:00  15:45  REQ GDE 324
+15:15  15:25      Call parents
+15:30  17:00      Social Media
+16:15  16:25      Call parents
+Two events are in conflict if their time intervals overlap. For example, Lunch (12:30-13:45) overlaps with Power nap (13;30-13:50), so can't both be in the same schedule. You may assume that events are at least one minute long, so two events that begin at the same time must be in conflict, e.g., Lunch and Exercise. However if an event starts at the same time another ends, then the two are not in conflict, e.g., Exercise and Power nap. Events that are required are preceded with "REQ" and must be included in any schedule. You may assume that required events cannot be in conflict with each other.
+
+You are to implement four different greedy approaches for constructing a schedule:
+
+Shortest event first: Repeatedly select the shortest event that does not conflict with previously selected events. For example, after adding the required events (CSC 421 and GDE 324) from above, the first optional event to be selected would be Call parents since it only takes 10 minutes. Next would be Shower (15 minutes), Power nap (20 minutes) and YouTube (30 minutes). The next shortest event, Breakfast with friends (45 minutes), cannot be selected since it conflicts with YouTube, so Exercise (1 hour) is selected next.
+Longest event first: Repeatedly select the longest event that does not conflict with previously selected events. For example, after adding the required events (CSC 581 and CSC 421) from above, the first optional event to be selected would be Sleep in since it is 10 hours and 20 minutes long. The next longest events, Sleep (7 hours 30 minutes) and Study for class (1 hour 40 minutes), cannot be selected since they conflict with Sleep in, so Lunch (1 hour 15 minutes) is selected next.
+Earliest start-time first: Repeatedly select the non-conflicting event that has the earliest start-time. For example, after adding the required events (CSC 581 and CSC 421) from above, the first event to be selected would be either Sleep or Sleep in since they both start at 0:00 (ties can be broken arbitrarily). Suppose, Sleep was selected. It would then be followed by Shower (7:45) and Breakfast with friends (8:00).
+Earliest end-time first: Repeatedly select the non-conflicting event that has the earliest end-time. For example, after adding the required events (CSC 581 and CSC 421) from above, the first event to be selected would be Sleep since it ends at 7:30. It would then be followed by Shower (8:00) and YouTube (8:40).
+Your program should read in a text file, with each line specifying the start and end times (in military notation) and a description of a single event. For example, see events.txt. Your program should display the four schedules generated using the above greedy strategies. Each schedule should list the selected events in chronological order (one event per line) and should clearly identify the approach used. The "REQ" designation should NOT appear when displaying required events and times should be properly aligned. For example:
+
+
+    Shortest event first:
+    ---------------------
+     0:00  7:30 Sleep
+     7:45  8:00 Shower
+     8:10  8:40 Social Media 
+    ...
+
+    Longest event first:
+    --------------------
+     0:00 10:20 Sleep in
+    11:00 12:15 CSC 421
+    12:30 13:45 Lunch
+    ...
+  
+    Earliest start-time first:
+    -------------------------
+     0:00  7:30 Sleep
+     7:45  8:00 Shower
+     8:00  8:45 Breakfast with friends
+    ...
+  
+    Earliest end-time first:
+    -----------------------
+     0:00  7:30 Sleep
+     7:45  8:00 Shower
+     8:10  8:40 Social Media
+    ...    
+You should follow sound object-oriented practices in designing and implementing the project, defining highly-cohesive and loosely-coupled classes as needed. Likewise, avoid duplicate and redundant code wherever possible.
+
+Hint: To avoid duplication, you might want to consider implementing Comparators for the different scheduling strategies.
