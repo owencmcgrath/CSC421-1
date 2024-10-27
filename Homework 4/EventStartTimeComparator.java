@@ -1,10 +1,8 @@
 import java.util.Comparator;
 
-public class EventStartTimeComparator implements Comparator<Event>
-{
+public class EventStartTimeComparator implements Comparator<Event> {
     @Override
-    public int compare(Event e1, Event e2)
-    {
-        return e1.getStartTime().compareTo(e2.getStartTime());   
+    public int compare(Event event1, Event event2) {
+        return Integer.compare(event1.getStartTime(), event2.getStartTime());
     }
 }
