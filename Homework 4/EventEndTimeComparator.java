@@ -1,8 +1,25 @@
 import java.util.Comparator;
 
-public class EventEndTimeComparator implements Comparator<Event> {
+/**
+* Compares events based on their respective end times.
+* @author Owen McGrath
+* @version 10/20/2024
+*/
+public class 
+EventEndTimeComparator 
+implements Comparator<Event> 
+{
+    /**
+    * Compares event1 with event2 based on their end times.
+    * @param event1, event2
+    * @return Integer.compare(event1.getEndTime(), event2.getEndTime())
+    * @author Owen McGrath
+    * @version 10/20/2024
+    */
     @Override
-    public int compare(Event e1, Event e2) {
-        return Integer.compare(e1.getEndTime(), e2.getEndTime());
+    public int 
+    compare(Event event1, Event event2) 
+    {
+        return Integer.compare(event1.getEndTime(), event2.getEndTime());
     }
 }
