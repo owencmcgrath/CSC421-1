@@ -5,6 +5,8 @@
 */
 public class 
 Event
+implements
+Comparable <Event>
 {
     private final String startTime;
     private final String endTime;
@@ -48,7 +50,7 @@ Event
     //computing the duration by converting the end time and start time to time since midnight and subtracting them
     public long getDuration()
     {
-        return toMinutes(endTime) - toMinutes(startTime); //duration helps find the time between two events
+        return toMinutes(endTime) - toMinutes(startTime);
     }
 
     //checks if two events are overlapping, and if they are, returns true
@@ -68,7 +70,15 @@ Event
     public 
     String toString()
     {
-        return "Start: " + startTime + ", End: " + endTime + ", Description: " + description;
+        return " " + startTime + " " + endTime + " " + description;
+    }
+
+    //create a default, comaprable that schedules them based on their start tim
+    @Override
+    public int 
+    compareTo(Event other) 
+    {
+        return Integer.compare(this.getStartTime(), other.getStartTime());
     }
 
     //private helper method to convert events into time since midnight in minutes

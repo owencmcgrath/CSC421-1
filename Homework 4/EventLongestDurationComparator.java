@@ -5,7 +5,9 @@ import java.util.Comparator;
 * @author Owen McGrath
 * @version 10/20/2024
 */
-public class EventLongestDurationComparator implements Comparator<Event> 
+public class 
+EventLongestDurationComparator 
+implements Comparator<Event> 
 {
 
     /**
@@ -16,7 +18,8 @@ public class EventLongestDurationComparator implements Comparator<Event>
     * @version 10/20/2024
     */
     @Override
-    public int compare(Event event1, Event event2) 
+    public int 
+    compare(Event event1, Event event2) 
     {
         long duration1 = event1.getDuration();
         long duration2 = event2.getDuration();

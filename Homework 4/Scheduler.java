@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -10,7 +11,6 @@ import java.util.List;
 public class 
 Scheduler 
 {   
-
     /**
     * Creates the schedules based on the events, the comparator, and conflicts
     * @param requiredEvents, optionalEvents, comparator
@@ -21,21 +21,21 @@ Scheduler
     public 
     List<Event> generateSchedule(List<Event> requiredEvents, List<Event> optionalEvents, Comparator<Event> comparator)
     {
+        //events are combined into the same list, and then sorted based on the comparator
+        List<Event> remainingEvents = new ArrayList<>(optionalEvents); 
+        List<Event> scheduledEvents = new ArrayList<>(requiredEvents); 
 
-        //events are combined into the same list, and then sorted based on the comparator 
-        List<Event> allEvents = new ArrayList<>(requiredEvents);
-        List<Event> scheduledEvents = new ArrayList<>();
-        allEvents.addAll(optionalEvents); 
-        allEvents.sort(comparator);
-
+        Collections.sort(remainingEvents, comparator);
+        
         //events are put into a schedule if there no conflicts or if it is required
-        for (Event event : allEvents) 
+        for (Event event : remainingEvents) 
         {
-            if (!hasConflicts(event, scheduledEvents) || event.isRequired()) 
+            if (!hasConflicts(event, scheduledEvents)) 
             {
                 scheduledEvents.add(event);
             } 
         }
+        Collections.sort(scheduledEvents);
         return scheduledEvents;
     }
 

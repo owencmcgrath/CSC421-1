@@ -10,7 +10,8 @@ import java.io.IOException;
 * @author Owen McGrath
 * @version 10/18/2024
 */
-public class SchedulerDriver 
+public class
+SchedulerDriver 
 {
     public static 
     void main(String[] args) throws IOException 
@@ -41,17 +42,17 @@ public class SchedulerDriver
         Scheduler scheduler = new Scheduler();
 
         //generates each schedule based on the events and the temporary comparator
-        System.out.println("\nSchedule sorted by Start Time:");
-        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventStartTimeComparator()));
-
-        System.out.println("\nSchedule sorted by End Time:");
-        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventEndTimeComparator()));
-
-        System.out.println("\nSchedule sorted by Shortest Duration:");
+        System.out.println("\nShortest Event First:");
         printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventShortestDurationComparator()));
 
-        System.out.println("\nSchedule sorted by Longest Duration:");
+        System.out.println("\nLongest Event First:");
         printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventLongestDurationComparator()));
+        
+        System.out.println("\n Earliest Start-Time First:");
+        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventStartTimeComparator()));
+
+        System.out.println("\n Earliest End-Time First:");
+        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventEndTimeComparator()));
     }
 
     /**

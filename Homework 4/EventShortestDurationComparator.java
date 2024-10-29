@@ -23,7 +23,8 @@ implements Comparator<Event>
         long duration1 = event1.getDuration();
         long duration2 = event2.getDuration();
                 
-        int durationComparison = Long.compare(duration2, duration1);
+        int durationComparison = Long.compare(duration1, duration2);
+        
         //result is a zero, startTimes are compared to determine which comes first 
         if (durationComparison == 0) 
         {
