@@ -23,36 +23,24 @@ SchedulerDriver
         input.close();
 
         List<Event> events = readEventsFromFile(filename);
-        List<Event> requiredEvents = new ArrayList<>();
-        List<Event> optionalEvents = new ArrayList<>();
+        Scheduler scheduler = new Scheduler(events);
 
-        //determines which list the event should go in
-        for (Event event : events) 
-        {
-            if (event.isRequired()) 
-            {
-                requiredEvents.add(event);
-            } 
-            else
-            {
-                optionalEvents.add(event);
-            }
-        }
+        //generates each schedule based on the events and the instantiated comparator
+        System.out.println("\n Shortest Event First:");
+        System.out.println(" ---------------------");
+        printSchedule(scheduler.generateSchedule(new EventShortestDurationComparator()));
 
-        Scheduler scheduler = new Scheduler();
-
-        //generates each schedule based on the events and the temporary comparator
-        System.out.println("\nShortest Event First:");
-        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventShortestDurationComparator()));
-
-        System.out.println("\nLongest Event First:");
-        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventLongestDurationComparator()));
+        System.out.println("\n Longest Event First:");
+        System.out.println(" ---------------------");
+        printSchedule(scheduler.generateSchedule(new EventLongestDurationComparator()));
         
         System.out.println("\n Earliest Start-Time First:");
-        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventStartTimeComparator()));
+        System.out.println(" ---------------------");
+        printSchedule(scheduler.generateSchedule(new EventStartTimeComparator()));
 
         System.out.println("\n Earliest End-Time First:");
-        printSchedule(scheduler.generateSchedule(requiredEvents, optionalEvents, new EventEndTimeComparator()));
+        System.out.println(" ---------------------");
+        printSchedule(scheduler.generateSchedule(new EventEndTimeComparator()));
     }
 
     /**
@@ -76,20 +64,23 @@ SchedulerDriver
                     String endTime = lineScanner.next();
                     String description = lineScanner.nextLine().trim();
 
+                    //determines if the description starts with REQ and trims it if it is        
                     boolean isRequired = description.startsWith("REQ");
                     if (isRequired) 
                     {
                         description = description.substring(3).trim();
                     }
 
+                    //creates a new event with the gotten strings
                     events.add(new Event(startTime, endTime, description, isRequired));
                 }
             }
         }
         return events;
     }
+    
     /**
-    * A helper method that prints out each relevant the generated schedule in the generatedSchedule method.
+    * Helper method that prints out each relevant generated schedule in the generatedSchedule method.
     * @param schedule -> the schedule to be printed
     * @author Owen McGrath
     * @version 10/18/2024
@@ -97,7 +88,8 @@ SchedulerDriver
     private static void 
     printSchedule(List<Event> schedule) 
     {
-        for (Event event : schedule) {
+        for (Event event : schedule) 
+        {
             System.out.println(event);
         }
     }

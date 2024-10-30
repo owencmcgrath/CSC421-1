@@ -13,6 +13,12 @@ Comparable <Event>
     private final String description;
     private final boolean isRequired; 
 
+    /**
+    * Instantiatiates the event object with the relevant fields
+    * @param startTime, endTime, description, isRequired
+    * @author Owen McGrath
+    * @version 10/20/2024
+    */
     public 
     Event(String startTime, String endTime, String description, boolean isRequired)
     {
@@ -24,19 +30,19 @@ Comparable <Event>
 
     //getters for important variables, converted to minutes after creation so that the original time is retained
     public int 
-    getStartTime() 
+    getStartTimeInMinutes() 
     {
         return toMinutes(startTime);
     }
 
     public int 
-    getEndTime() 
+    getEndTimeInMinutes() 
     {
         return toMinutes(endTime);
     }
 
-    public 
-    String getDescription() 
+    public String 
+    getDescription() 
     {
         return description;
     }
@@ -47,13 +53,25 @@ Comparable <Event>
         return isRequired;
     }
 
-    //computing the duration by converting the end time and start time to time since midnight and subtracting them
+    /**
+    * Calculates the duration of an event
+    * @return duration
+    * @author Owen McGrath
+    * @version 10/20/2024
+    */
     public long getDuration()
     {
-        return toMinutes(endTime) - toMinutes(startTime);
+        int duration = toMinutes(endTime) - toMinutes(startTime);
+        return duration;
     }
 
-    //checks if two events are overlapping, and if they are, returns true
+    /**
+    * Determines whether or not an event overlaps with another
+    * @param other 
+    * @return overlapsWith
+    * @author Owen McGrath
+    * @version 10/21/2024
+    */
     public boolean 
     overlapsWith(Event other)
     {
@@ -62,26 +80,46 @@ Comparable <Event>
         int otherEventStart = toMinutes(other.startTime);
         int otherEventEnd = toMinutes(other.endTime);        
         
-        return currentEventStart < otherEventEnd && otherEventStart < currentEventEnd;
+        boolean overlapsWith =  currentEventStart < otherEventEnd && otherEventStart < currentEventEnd;
+        return overlapsWith;
     }
 
-    //prints out each event with the original start time/end time (in HH:mm)
+    /**
+    * Returns a formatted string for an event.
+    * @return formatted string
+    * @author Owen McGrath
+    * @version 10/20/2024
+    */
     @Override
     public 
     String toString()
     {
-        return " " + startTime + " " + endTime + " " + description;
+        String formattedString =  " " + startTime + " " + endTime + " " + description;
+        return formattedString;
     }
 
-    //create a default, comaprable that schedules them based on their start tim
+    /**
+    * A comparator that compares two events based on their start times.
+    * @param other
+    * @return comparedEvents
+    * @author Owen McGrath
+    * @version 10/28/2024
+    */
     @Override
     public int 
     compareTo(Event other) 
     {
-        return Integer.compare(this.getStartTime(), other.getStartTime());
+        int comparedEvents = Integer.compare(this.getStartTimeInMinutes(), other.getStartTimeInMinutes());
+        return comparedEvents;
     }
 
-    //private helper method to convert events into time since midnight in minutes
+    /**
+    * Splits the times based on the colon and converts them to integers.
+    * @param time
+    * @return minutesSinceMidnight
+    * @author Owen McGrath
+    * @version 10/20/2024
+    */
     private int 
     toMinutes(String time)
     {

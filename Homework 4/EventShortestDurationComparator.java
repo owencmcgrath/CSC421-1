@@ -10,7 +10,7 @@ EventShortestDurationComparator
 implements Comparator<Event> 
 {
     /**
-    * Compares two events to find which one has the shortest time
+    * Compares two events to find which one has the shortest time.
     * @param event1, event2
     * @return return Integer.compare(event1.getStartTime(), event2.getStartTime()), return durationComparison
     * @author Owen McGrath
@@ -28,7 +28,7 @@ implements Comparator<Event>
         //result is a zero, startTimes are compared to determine which comes first 
         if (durationComparison == 0) 
         {
-            return Integer.compare(event1.getStartTime(), event2.getStartTime());
+            return Integer.compare(event1.getStartTimeInMinutes(), event2.getStartTimeInMinutes());
         }
         return durationComparison;
     }
