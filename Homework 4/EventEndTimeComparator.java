@@ -20,6 +20,6 @@ implements Comparator<Event>
     public int 
     compare(Event event1, Event event2) 
     {
-        return Integer.compare(event1.getEndTime(), event2.getEndTime());
+        return Integer.compare(event1.getEndTimeInMinutes(), event2.getEndTimeInMinutes());
     }
 }
