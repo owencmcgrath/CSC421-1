@@ -19,12 +19,29 @@ PuzzleDriver {
 
         if (desiredPuzzle.equals("S"))
         {
+            System.out.println("You have chosen sudoku.");
             Puzzle sud = new Sudoku(filename);
             System.out.println(sud);
                     
             if (sud.solve()) 
             {
                 System.out.println("Solution found:\n" + sud);
+            }
+            else 
+            {
+        	System.out.println("No solution possible");
+            }
+        } 
+        
+        if  (desiredPuzzle.equals("3"))
+        {
+            System.out.println("You have chosen three-in-a-row.");
+            Puzzle three = new ThreeInARow(filename);
+            System.out.println(three);
+                    
+            if (three.solve()) 
+            {
+                System.out.println("Solution found:\n" + three);
             }
             else 
             {
