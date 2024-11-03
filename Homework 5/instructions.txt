@@ -1,3 +1,8 @@
+CSC 421: Algorithm Design & Analysis
+Fall 2024
+
+HW5: Recursive Backtracking Puzzles
+
 In class, we studied the Sudoku class that used recursive backtracking to solve Sudoku puzzles. Sudoku is just one of a family of Japanese grid-based puzzles in which the player must fill the board with values that meet some set of constraints. For Sudoku, the goal is to fill the grid with numbers such that no row, column or subsquare contains duplicate numbers. Other games, such as 3-in-a-row and Range, require the user to fill the grid with colored tiles while meeting additional constraints. BrainBashers.com is a great source of Japanese grid-based puzzles such as these.
 
 For this assignment, you will download the provided Sudoku class and generalize it to create an abstract Puzzle class, which can then be extended to solve many different grid-based puzzles.
