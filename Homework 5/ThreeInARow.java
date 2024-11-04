@@ -18,7 +18,7 @@ Puzzle
         //the current symbol that needs to be checked
         String piece = this.grid[row][col];
 
-        //if the cell is empty, there cannot be a conflict
+        //if the cell doesn;t have a sqaure, there cannot be a conflict
         if (piece.equals("-"))
         {
             return false;
