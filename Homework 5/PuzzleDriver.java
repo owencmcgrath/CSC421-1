@@ -31,9 +31,8 @@ PuzzleDriver {
             {
         	System.out.println("No solution possible");
             }
-        } 
-        
-        if  (desiredPuzzle.equals("3"))
+        }
+        else if (desiredPuzzle.equals("3"))
         {
             System.out.println("You have chosen three-in-a-row.");
             Puzzle three = new ThreeInARow(filename);
@@ -46,7 +45,26 @@ PuzzleDriver {
             else 
             {
         	System.out.println("No solution possible");
+            }                                            
+        }
+        else if (desiredPuzzle.equals("R"))
+        {
+            System.out.println("You have chosen range.");
+            Puzzle range = new Range(filename);
+            System.out.println(range);
+
+            if (range.solve())
+            {
+                System.out.println("Solution found: \n" + range);
+            }
+            else
+            {
+                System.out.println("No solution possible");
             }
         }
+        else
+        {
+            System.out.println("Your selection was unrecognized. Please try again.");
+        } 
     }    
 }

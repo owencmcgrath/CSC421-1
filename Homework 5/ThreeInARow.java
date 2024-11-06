@@ -18,33 +18,33 @@ Puzzle
         //the current symbol that needs to be checked
         String piece = this.grid[row][col];
 
-        //if the cell doesn;t have a sqaure, there cannot be a conflict
+        //if the cell doesn't have a square, there cannot be a conflict
         if (piece.equals("-"))
         {
             return false;
         }
 
-        //checks the next three columns for three sqaures that match piece in a row
+        //checks the next three columns for three squares that match piece in a row
         //loops three times to avoid going out of bounds
         for (int i = 0; i <= numCols - 3; i++)
         {
             if (grid[row][i].equals(piece) && grid[row][i + 1].equals(piece) && grid[row][i + 2].equals(piece))
             {
-                return true; //there are three sqaures and there is a conflict
+                return true; //there are three squares and there is a conflict
             }   
         }
 
-        //checks the next three columns for three sqaures that match piece in a column
-        //loops three tiems to avoid going out of bounds
+        //checks the next three columns for three squares that match piece in a column
+        //loops three times to avoid going out of bounds
         for (int i = 0; i <= numRows - 3; i++)
         {
             if (grid[i][col].equals(piece) && grid[i + 1][col].equals(piece) && grid[i + 2][col].equals(piece))
             {
-                return true; //there are three sqaures that create a conflict
+                return true; //there are three squares that create a conflict
             }   
         }
 
-        //counts how how black or white squares are in a row
+        //counts how many black or white squares are in a row
         int blackCountRow = 0;
         int whiteCountRow = 0;
         for (int i = 0; i < numCols; i++) 
