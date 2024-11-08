@@ -13,7 +13,7 @@ PuzzleDriver {
         Scanner input = new Scanner(System.in);
         System.out.println("Enter the puzzle file name: ");
         String filename = input.next();
-        System.out.println("What puzzle would you like solved? (S, 3, R): ");
+        System.out.println("What puzzle would you like solved? (S, 3, R, H): ");
         String desiredPuzzle = input.next();
         input.close();
 
@@ -60,6 +60,21 @@ PuzzleDriver {
             else
             {
                 System.out.println("No solution possible");
+            }
+        }
+        else if (desiredPuzzle.equals("H"))
+        {
+            System.out.println("You have chosen hitori. ");
+            Puzzle hitori = new Hitori(filename);
+            System.out.println(hitori);
+
+            if (hitori.solve())
+            {
+                System.out.println("Solution found: \n" + hitori);
+            }
+            else
+            {
+                System.out.println("No solution is possible");
             }
         }
         else

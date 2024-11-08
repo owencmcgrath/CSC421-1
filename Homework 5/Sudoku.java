@@ -22,7 +22,8 @@ Puzzle
      */
     public 
     Sudoku(String filename) 
-    throws java.io.FileNotFoundException 
+    throws 
+    java.io.FileNotFoundException 
     {	
         super(filename);
     }
@@ -52,11 +53,22 @@ Puzzle
                 return true;
             }
         }
-    
+        return isPieceInSquare(row, col, piece);
+    }
+
+    /**
+    * Helper method to check the subgrid
+    *   @param row the row where the piece was placed
+    *   @param col the column where the piece was placed
+    *   @return true if a conflict exists in the subgrid, else false
+    */
+    private boolean 
+    isPieceInSquare(int row, int col, String piece)
+    {
         int squareSide = (int) Math.sqrt(this.grid.length);
         int baseRow = squareSide * (row / squareSide);
         int baseCol = squareSide * (col / squareSide);
-    
+               
         for (int r = baseRow; r < baseRow + squareSide; r++) 
         {
             for (int c = baseCol; c < baseCol + squareSide; c++) 
@@ -67,6 +79,6 @@ Puzzle
                 }
             }
         }
-        return false;
+        return false;   
     }
 }

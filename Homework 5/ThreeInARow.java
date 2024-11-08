@@ -18,6 +18,8 @@ Puzzle
         //the current symbol that needs to be checked
         String piece = this.grid[row][col];
 
+        //TODO: two methods, one that creates an array from a column and one that checks in an array
+        
         //if the cell doesn't have a square, there cannot be a conflict
         if (piece.equals("-"))
         {
