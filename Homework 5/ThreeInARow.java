@@ -1,92 +1,121 @@
 import java.io.File;
 
+/**
+ * Class that represents a ThreeInARow puzzle by extending the default Puzzle class.
+ *   @author Owen McGrath
+ *   @version 10/28/24
+ */
 public class
 ThreeInARow
 extends
 Puzzle
 {
+
+    /**
+    * Constructs a grid with contents read in from a file.
+    *   @param filename the file name containing the grid
+    *   @throws java.io.FileNotFoundException 
+    */
     public ThreeInARow (String filename)
     throws java.io.FileNotFoundException
     {
         super(filename);
     }
 
+    /**
+    * Determines if there is a conflict after placing piece in (row,col).
+    *   @param row the row where the piece was placed
+    *   @param col the column where the piece was placed
+    *   @return true if that piece caused a conflict, else false
+    */
     @Override
     public boolean 
     hasConflict(int row, int col)
     {
-        //the current symbol that needs to be checked
         String piece = this.grid[row][col];
+        String[] columnArray = getColumnArray(col);
 
-        //TODO: two methods, one that creates an array from a column and one that checks in an array
+        if (hasThreeInARow(this.grid[row], piece))
+        {
+            return true;
+        }
         
-        //if the cell doesn't have a square, there cannot be a conflict
-        if (piece.equals("-"))
-        {
-            return false;
-        }
-
-        //checks the next three columns for three squares that match piece in a row
-        //loops three times to avoid going out of bounds
-        for (int i = 0; i <= numCols - 3; i++)
-        {
-            if (grid[row][i].equals(piece) && grid[row][i + 1].equals(piece) && grid[row][i + 2].equals(piece))
-            {
-                return true; //there are three squares and there is a conflict
-            }   
-        }
-
-        //checks the next three columns for three squares that match piece in a column
-        //loops three times to avoid going out of bounds
-        for (int i = 0; i <= numRows - 3; i++)
-        {
-            if (grid[i][col].equals(piece) && grid[i + 1][col].equals(piece) && grid[i + 2][col].equals(piece))
-            {
-                return true; //there are three squares that create a conflict
-            }   
-        }
-
-        //counts how many black or white squares are in a row
-        int blackCountRow = 0;
-        int whiteCountRow = 0;
-        for (int i = 0; i < numCols; i++) 
-        {
-            if (grid[row][i].equals("▣")) 
-            {
-                blackCountRow++;
-            }
-            if (grid[row][i].equals("▢")) 
-            {
-                whiteCountRow++;
-            }
-        }
-    
-        //since there has to be the number of columns (or rows) / 2 number of squares, this checks to see if there are any more.
-        //if there are, there must be a conflict    
-        if (blackCountRow > numCols / 2 || whiteCountRow > numCols / 2) 
+        if (hasThreeInARow(columnArray, piece))
         {
             return true;
         }
 
-        //does the same thing as above, but for the rows
-        int blackCountCol = 0;
-        int whiteCountCol = 0;
-        for (int i = 0; i < numRows; i++) 
-        {
-            if (grid[i][col].equals("▣")) 
-            {
-                blackCountCol++;
-            }
-            if (grid[i][col].equals("▢")) 
-            {
-                whiteCountCol++;
-            }
-        } 
-        
-        if (blackCountCol > numRows / 2 || whiteCountCol > numRows / 2) 
+        //TODO: ask if this limit needs to be dynamic
+        if (countExceedsLimit(this.grid[row], 3))
         {
             return true;
-        }              
+        }    
+
+        if (countExceedsLimit(columnArray, 3))
+        {
+            return true;
+        }
         return false;
+    }
+
+    /**
+    * Gets each column and converts it into an array.
+    *   @param col column index
+    *   @return columnArray a column as an array
+    */
+    private String[] 
+    getColumnArray(int col)
+    {
+        String[] columnArray = new String[numRows]; //creates an array with a limit of the number of rows
+        for (int i = 0; i < numRows; i++)
+        {
+            columnArray[i] = this.grid[i][col];
+        }
+        return columnArray;
+    }
+
+    /**
+    * Checks the next three spaces to see if they match 
+    *   @param array the array to be checked
+    *   @param piece the piece to be checked to see if three are matching
+    *   @return true if there three consecutive statements, else false
+    */
+    private boolean 
+    hasThreeInARow(String[] array, String piece)
+    {
+        for (int i = 0; i <= array.length - 3; i++)
+        {
+            if (array[i].equals(piece) && array[i + 1].equals(piece) && array[i + 2].equals(piece))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+    * For each piece of the row/column, a black or white count is incremented
+    *   @param array the group of pieces to be checked
+    *   @limit the number of columns and rows that are valid
+    *   @return true if the limit is exceeded, else false
+    */
+    private boolean 
+    countExceedsLimit(String[] array, int limit)
+    {
+        int whiteCount = 0;
+        int blackCount = 0;
+
+        for (String piece : array)
+        {
+            if (piece.equals("▢"))
+            {
+                whiteCount++;
+            }
+            else if (piece.equals("▣"))
+            {
+                blackCount++;
+            }
+        }
+        return blackCount > limit || whiteCount > limit;
     }
 }

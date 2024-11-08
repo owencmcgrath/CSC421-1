@@ -57,7 +57,7 @@ Puzzle
     }
 
     /**
-    * Helper method to check the subgrid
+    * Helper method to check the subgrid.
     *   @param row the row where the piece was placed
     *   @param col the column where the piece was placed
     *   @return true if a conflict exists in the subgrid, else false

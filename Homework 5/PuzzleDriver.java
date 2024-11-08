@@ -35,7 +35,7 @@ PuzzleDriver
             {
                 System.out.println("You have chosen sudoku.");
                 Puzzle sud = new Sudoku(filename);
-                System.out.println(sud);z
+                System.out.println(sud);
 
                 if (sud.solve())
                 {
