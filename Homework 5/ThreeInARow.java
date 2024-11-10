@@ -45,13 +45,12 @@ Puzzle
             return true;
         }
 
-        //TODO: ask if this limit needs to be dynamic
-        if (countExceedsLimit(this.grid[row], 3))
+        if (countExceedsLimit(this.grid[row], numCols / 2))
         {
             return true;
         }    
 
-        if (countExceedsLimit(columnArray, 3))
+        if (countExceedsLimit(columnArray, numRows / 2))
         {
             return true;
         }

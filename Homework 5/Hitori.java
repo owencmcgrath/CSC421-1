@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Class that represents a Sudoku Puzzle (with backtracking solver).
+ * Class that represents a Hitori Puzzle (with backtracking solver).
  *   @author Owen McGrath
  *   @version 10/20/24
  */
@@ -34,19 +34,13 @@ Puzzle
      *   @return true if that pieces caused a conflict, else false
      */
 
-    //TODO: loop the entire row and column, check for duplicates
     @Override
     public boolean 
     hasConflict(int row, int col)
     {
         String piece = this.grid[row][col];
 
-        if (!Character.isDigit(piece.charAt(0)))
-        {
-            return false; //not a cell with a number, so dont check
-        }
-
-        int whiteCount = 1; //gotta count the cell itself, playa
+        int whiteCount = 1; 
         int numberPiece = Integer.parseInt(piece);
 
         //starts at the left of the cell and moves left until it hits either a black box or an edge

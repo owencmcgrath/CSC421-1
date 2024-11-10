@@ -35,11 +35,12 @@ Puzzle
     {
         String piece = this.grid[row][col];
 
-        if (!Character.isDigit(piece.charAt(0)) || piece.equals("-"))
+        if (!piece.matches("\\d+")) //regex to check if the piece is numeric or not. learned at intnerhsip
         {
-            return false; //not a cell with a number, so dont check
+            return false;
         }
-
+        
+        int pieceAsInteger = Integer.parseInt(piece); //convert to integer so that it can be compared to white count
         int whiteCount = 1; //initialize at one to count the cell itself
 
         //starts at the left of the cell and moves left until it hits either a black box or an edge
@@ -66,9 +67,6 @@ Puzzle
             whiteCount++;
         }
 
-        int pieceAsInteger = Integer.parseInt(piece); //convert to integer so that it can be compared to white count
-
-        //return whether or not the count of white cells doesn't equal the original number 
-        return (whiteCount != pieceAsInteger); 
+        return (whiteCount != pieceAsInteger); //return whether or not the count of white cells doesn't equal the original number  
     }
 }

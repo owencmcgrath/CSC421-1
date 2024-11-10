@@ -23,7 +23,7 @@ PuzzleDriver
         while (true)
         {
             System.out.println("What puzzle would you like solved? (S, 3, R, H) or Q to quit: ");
-            String desiredPuzzle = input.next();
+            String desiredPuzzle = input.next().toUpperCase();
 
             if (desiredPuzzle.equals("Q"))
             {
@@ -31,75 +31,58 @@ PuzzleDriver
                 break;
             }
 
+            Puzzle puzzle = null;
             if (desiredPuzzle.equals("S"))
             {
-                System.out.println("You have chosen sudoku.");
-                Puzzle sud = new Sudoku(filename);
-                System.out.println(sud);
-
-                if (sud.solve())
-                {
-                    System.out.println ("Solution found:\n" + sud);
-                }
-                else
-                {
-                    System.out.println ("No solution possible");
-                }
-                break;
+                System.out.println("You have chosen Sudoku.");
+                puzzle = new Sudoku(filename);
             }
-            else if (desiredPuzzle.equals ("3"))
+            else if (desiredPuzzle.equals("3"))
             {
-                System.out.println ("You have chosen three-in-a-row.");
-                Puzzle three = new ThreeInARow (filename);
-                System.out.println (three);
-
-                if (three.solve())
-                {
-                    System.out.println ("Solution found:\n" + three);
-                }
-                else
-                {
-                    System.out.println ("No solution possible");
-                }
-                break;
+                System.out.println("You have chosen Three-In-A-Row.");
+                puzzle = new ThreeInARow(filename);
             }
-            else if (desiredPuzzle.equals ("R"))
+            else if (desiredPuzzle.equals("R"))
             {
-                System.out.println ("You have chosen range.");
-                Puzzle range = new Range (filename);
-                System.out.println (range);
-
-                if (range.solve())
-                {
-                    System.out.println ("Solution found: \n" + range);
-                }
-                else
-                {
-                    System.out.println ("No solution possible");
-                }
-                break;
+                System.out.println("You have chosen Range.");
+                puzzle = new Range(filename);
             }
-            else if (desiredPuzzle.equals ("H"))
+            else if (desiredPuzzle.equals("H"))
             {
-                System.out.println ("You have chosen hitori. ");
-                Puzzle hitori = new Hitori (filename);
-                System.out.println (hitori);
-
-                if (hitori.solve())
-                {
-                    System.out.println ("Solution found: \n" + hitori);
-                }
-                else
-                {
-                    System.out.println ("No solution is possible");
-                }
-                break;
+                System.out.println("You have chosen Hitori.");
+                puzzle = new Hitori(filename);
             }
             else
             {
-                System.out.println ("Your selection was unrecognized. Please try again.");
-            } 
+                System.out.println("Your selection was not an option. Please try again.");
+                continue;
+            }
+
+            if (puzzle != null)
+            {
+                solvePuzzle(puzzle);
+                break;
+            }
+
+            input.close();
         }
-        input.close();
+    }
+
+    /**
+    * Helper method that solves the chosen puzzle
+    *   @param puzzle the selected puzzle that shoudl be solved
+    */
+    private static void solvePuzzle(Puzzle puzzle)
+    {
+        System.out.println(puzzle);
+
+        if (puzzle.solve())
+        {
+            System.out.println("Solution found:\n" + puzzle);
+        }
+        else
+        {
+            System.out.println("No solution has been found.");
+        }
     }
 }
