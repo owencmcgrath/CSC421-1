@@ -13,7 +13,8 @@ PuzzleDriver
     */
     public static void
     main(String[] args) 
-    throws java.io.FileNotFoundException
+    throws 
+    java.io.FileNotFoundException
     {
 
         Scanner input = new Scanner (System.in);
@@ -72,7 +73,8 @@ PuzzleDriver
     * Helper method that solves the chosen puzzle
     *   @param puzzle the selected puzzle that shoudl be solved
     */
-    private static void solvePuzzle(Puzzle puzzle)
+    private static void 
+    solvePuzzle(Puzzle puzzle)
     {
         System.out.println(puzzle);
 

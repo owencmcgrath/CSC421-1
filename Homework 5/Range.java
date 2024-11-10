@@ -50,19 +50,19 @@ Puzzle
         }
 
         //starts at the right of the the cell and moves right until it hits either a black box or an edge
-        for (int i = col + 1; i < numCols && grid[row][i].equals("▣"); i++)
+        for (int i = col + 1; i < numCols && grid[row][i].equals("▢"); i++)
         {
             whiteCount++;
         }
 
         //starts at the row abov the cell and moves up until it either hits a black box or an edge
-        for (int i = row - 1; i >= 0 && grid[i][col].equals("▣"); i--)
+        for (int i = row - 1; i >= 0 && grid[i][col].equals("▢"); i--)
         {
             whiteCount++;
         }
 
         //starts at the row below the cell and moves down until it either hits a black or an edge
-        for (int i = row + 1; i < numRows && grid[i][col].equals("▣"); i++)
+        for (int i = row + 1; i < numRows && grid[i][col].equals("▢"); i++)
         {
             whiteCount++;
         }

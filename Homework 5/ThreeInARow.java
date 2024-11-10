@@ -16,8 +16,10 @@ Puzzle
     *   @param filename the file name containing the grid
     *   @throws java.io.FileNotFoundException 
     */
-    public ThreeInARow (String filename)
-    throws java.io.FileNotFoundException
+    public 
+    ThreeInARow (String filename)
+    throws 
+    java.io.FileNotFoundException
     {
         super(filename);
     }
