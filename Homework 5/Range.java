@@ -74,7 +74,6 @@ Puzzle
         whiteCount += leftCount[0] + rightCount[0] + upCount[0] + downCount[0];
         possible += leftCount[1] + rightCount[1] + upCount[1] + downCount[1];
 
-        //check taht we determined togehter
         return (whiteCount <= pieceAsInteger && (whiteCount + possible) >= pieceAsInteger);
     }
 
