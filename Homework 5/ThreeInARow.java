@@ -1,5 +1,3 @@
-import java.io.File;
-
 /**
  * Class that represents a ThreeInARow puzzle by extending the default Puzzle class.
  *   @author Owen McGrath

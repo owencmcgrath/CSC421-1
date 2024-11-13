@@ -1,8 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -27,21 +25,20 @@ Puzzle
     Puzzle(String filename) 
     throws java.io.FileNotFoundException 
     {	
-        Scanner infile = new Scanner(new File(filename)); 
+        try (Scanner infile = new Scanner(new File(filename))) {
 
-        //collections is used since addAll cannot accept an array and i do not want to do this with two nested for loops :thumbsup:
-        Collections.addAll(possibleValues, infile.nextLine().split(" "));                  
-        this.numCols = infile.nextInt();
-        this.numRows = infile.nextInt();
-        infile.nextLine();
-        
-        this.grid = new String[numRows][numCols];
+            //collections is used since addAll cannot accept an array and i do not want to do this with two nested for loops :thumbsup:
+            Collections.addAll(possibleValues, infile.nextLine().split(" "));
+            this.numCols = infile.nextInt();
+            this.numRows = infile.nextInt();
+            infile.nextLine();
 
-        for (int r = 0; r < numRows; r++) 
-        {
-            for (int c = 0; c < numCols; c++) 
-            {
-            	this.grid[r][c] = infile.next();
+            this.grid = new String[numRows][numCols];
+
+            for (int r = 0; r < numRows; r++) {
+                for (int c = 0; c < numCols; c++) {
+                    this.grid[r][c] = infile.next();
+                }
             }
         }
     }

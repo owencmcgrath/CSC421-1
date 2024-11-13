@@ -17,55 +17,53 @@ PuzzleDriver
     java.io.FileNotFoundException
     {
 
-        Scanner input = new Scanner (System.in);
-        System.out.println("Enter the puzzle file name: ");
-        String filename = input.next();                    
-    
-        while (true)
-        {
-            System.out.println("What puzzle would you like solved? (S, 3, R, H) or Q to quit: ");
-            String desiredPuzzle = input.next().toUpperCase();
+        try (Scanner input = new Scanner (System.in)) {
+            System.out.println("Enter the puzzle file name: ");
+            String filename = input.next();                    
+   
+            while (true)
+            {
+                System.out.println("What puzzle would you like solved? (S, 3, R, H) or Q to quit: ");
+                String desiredPuzzle = input.next().toUpperCase();
 
-            if (desiredPuzzle.equals("Q"))
-            {
-                System.out.println("Bye!");
-                break;
-            }
+                if (desiredPuzzle.equals("Q"))
+                {
+                    System.out.println("Bye!");
+                    break;
+                }
 
-            Puzzle puzzle = null;
-            if (desiredPuzzle.equals("S"))
-            {
-                System.out.println("You have chosen Sudoku.");
-                puzzle = new Sudoku(filename);
-            }
-            else if (desiredPuzzle.equals("3"))
-            {
-                System.out.println("You have chosen Three-In-A-Row.");
-                puzzle = new ThreeInARow(filename);
-            }
-            else if (desiredPuzzle.equals("R"))
-            {
-                System.out.println("You have chosen Range.");
-                puzzle = new Range(filename);
-            }
-            else if (desiredPuzzle.equals("H"))
-            {
-                System.out.println("You have chosen Hitori.");
-                puzzle = new Hitori(filename);
-            }
-            else
-            {
-                System.out.println("Your selection was not an option. Please try again.");
-                continue;
-            }
+                Puzzle puzzle = null;
+                if (desiredPuzzle.equals("S"))
+                {
+                    System.out.println("You have chosen Sudoku.");
+                    puzzle = new Sudoku(filename);
+                }
+                else if (desiredPuzzle.equals("3"))
+                {
+                    System.out.println("You have chosen Three-In-A-Row.");
+                    puzzle = new ThreeInARow(filename);
+                }
+                else if (desiredPuzzle.equals("R"))
+                {
+                    System.out.println("You have chosen Range.");
+                    puzzle = new Range(filename);
+                }
+                else if (desiredPuzzle.equals("H"))
+                {
+                    System.out.println("You have chosen Hitori.");
+                    puzzle = new Hitori(filename);
+                }
+                else
+                {
+                    System.out.println("Your selection was not an option. Please try again.");
+                    continue;
+                }
 
-            if (puzzle != null)
-            {
-                solvePuzzle(puzzle);
-                break;
+                {
+                    solvePuzzle(puzzle);
+                    break;
+                }
             }
-
-            input.close();
         }
     }
 

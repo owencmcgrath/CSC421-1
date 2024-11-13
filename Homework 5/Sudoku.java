@@ -1,10 +1,3 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-
 /**
  * Class that represents a Sudoku Puzzle (with backtracking solver).
  *   @author Dave Reed, Owen McGrath
