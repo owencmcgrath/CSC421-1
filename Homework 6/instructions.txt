@@ -1,0 +1,52 @@
+CSC 421: Algorithm Design & Analysis
+Fall 2024
+
+HW5: Divide-and-Conquer vs. Dynamic
+
+In the lectures, we considered two different solutions to the World Series puzzle. The divide & conquer solution utilized recursion to break the problem into simpler instances and combined solutions to those instances to solve the overall problem. The dynamic programming solution utilized a table of subproblem solutions that it filled in a bottom-up manner. Both solutions were based on a simple recurrence relation that defined how a problem solution could be built out of solutions to smaller problems.
+
+For this assignment, you will consider a new game named Evensies that is being introduced at the CSDJ Casino for the Probabilistically Challenged. In Evensies, a player puts down a stack of tokens and specifies the number of rounds they want to play. In each round, the player predicts the result of rolling two dice, either Evensies (predicting an even sum) or Oddsies (predicting an odd sum). If they guess correctly, they win a token from the house, but if they were incorrect, they lose a token. There is a wrinkle, however. Any roll that consists only of 1's and 2's is referred to as Bottomsies. A roll of Bottomsies causes the player to lose a token on top of the token they won or lost based on even/odd. The game ends when the specified number of rounds have been played or the player runs out of tokens.
+
+For example, suppose a player begins a game with 10 tokens and wants to play 5 rounds. The following is a possible game outcome:
+
+Round	Guess	Roll	Result
+starts with 10 tokens
+1	Evensies	5-3	CORRECT: 10 + 1 = 11 tokens
+2	Oddsies	1-3	INCORRECT: 11 - 1 = 10 tokens
+3	Evensies	2-2	CORRECT BUT BOTTOMSIES: 10 + 1 - 1 = 10 tokens
+4	Oddsies	1-1	INCORRECT AND BOTTOMSIES: 10 - 1 - 1 = 8 tokens
+2	Evensies	6-3	INCORRECT: 8 - 1 = 7 tokens
+Part 1: Divide & Conquer (30%)
+
+Create a class named Evensies that contains the following static method:
+
+    /**
+     *  Determines the expected # of tokens for the player at the game's end,
+     *  using a top-down, divide & conquer approach.
+     *    @param tokens the number of tokens currently held by the player
+     *    @param rounds the number of rounds left to be played
+     */
+     public static double expectedTopDown(tokens, rounds)        
+Once you have tested your method thoroughly, answer the following questions and provide experimental results to justify your answers:
+
+Suppose the player starts with 5 tokens and wants to play 1 round? What is the expected number of tokens they will have after 1 round? How about 10 tokens and 1 round? Is there a commonality to the expected number of tokens won/lost after playing 1 round, regardless of the starting number of tokens?
+Suppose the player starts with 5 tokens and wants to play 5 rounds? What is the expected number of tokens they will have after 1 round? How about 10 tokens and 5 rounds? Is there a commonality to the expected number of tokens won/lost after playing 5 rounds, regardless of the starting number of tokens?
+Based on your experiments, does the starting number of tokens have any impact on the amount of work (assuming the number of rounds is the same)? Can you explain why that would be the case?
+Is there a practical limit to how many rounds your expectedTopDown method can handle? If so, what is that limit?
+Part 2: Dynamic Programming (40%)
+
+Add a second static method to your Evensies class named expectedBottomUp. This method should have the same parameters as expectedTopDown and should calculate the same value, only now using a dynamic programming approach. In particular, it should avoid duplicate calculations by building up a table of answers in a bottom-up fashion.
+
+Answer the following questions and provide experimental results to justify your answers:
+
+Does this new method return the same answers as the previous one? How would you go about testing this?
+Is this version noticeably faster? If so, how long can the games be before the delay using expectedBottomUp is significant?
+If you start with a small number of tokens (e.g., 10) and play a significantly larger number of rounds (e.g., 100), how many tokens are you expected to win/lose? If you play the same number of rounds but with a comparably large number of starting tokens (e.g., tokens = rounds), are the expected wins/losses the same or different? Can you provide an explanation?
+Part 3: Caching (30%)
+
+Add a third static method named expectedCaching. This method should have the same parameters as the other two methods and should calculate the same value, only now using top-down approach with caching. That is, it should use the same recursive approach as expectedTopDown but should maintain a data structure that stores subproblem solutions. When it solves a subproblem, it should store the answer in the data structure. The next time it sees that same subproblem, it should simply use the stored answer and avoid the duplicate recursive call.
+
+Answer the following questions and provide experimental results to justify your answers:
+
+Does this new method return the same answers as the previous two? How would you go about testing this?
+How does the method compare with the other two in terms of speed? Can it handle longer games than expectedTopDown? How does it compare with expectedBottomUp?
