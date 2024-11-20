@@ -1,4 +1,3 @@
-import java.util.Set;
 
 /**
  * Driver class that times the brute force Knapsack solver.
@@ -16,7 +15,6 @@ public class KnapsackTimer {
     	    }
 
     	    timer.start();
-    	    Set<KnapsackItem> subset = sack.findOptimalSubset();
     	    timer.stop();
 
     	    System.out.println(i + " " + timer.getElapsedTime());
