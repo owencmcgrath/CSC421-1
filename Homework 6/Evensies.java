@@ -1,7 +1,3 @@
-/*
- For this assignment, you will consider a new game named Evensies that is being introduced at the CSDJ Casino for the Probabilistically Challenged. In Evensies, a player puts down a stack of tokens and specifies the number of rounds they want to play. In each round, the player predicts the result of rolling two dice, either Evensies (predicting an even sum) or Oddsies (predicting an odd sum). If they guess correctly, they win a token from the house, but if they were incorrect, they lose a token. There is a wrinkle, however. Any roll that consists only of 1's and 2's is referred to as Bottomsies. A roll of Bottomsies causes the player to lose a token on top of the token they won or lost based on even/odd. The game ends when the specified number of rounds have been played or the player runs out of tokens.
- */
-
 public class Evensies 
 {
   /**
