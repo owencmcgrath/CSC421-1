@@ -115,4 +115,16 @@ public class Evensies
     //if the results of the die are 1 or 2, return true 
     return (die1 <= 2 && die2 <= 2);
   }
+
+  /**
+   *  Determines the expected # of tokens for the player at the game's end,
+   *  using a bottom-up, dynamic-programming.
+   *    @param tokens the number of tokens currently held by the player
+   *    @param rounds the number of rounds left to be played
+   */
+  public static double expectedBottomUp(int tokens, int rounds)   
+  {
+      //create a 2D array to store the results of the subproblems
+      int map[][] = new int[tokens + 1][rounds + 1];
+  }
 }
