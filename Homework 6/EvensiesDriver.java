@@ -5,9 +5,11 @@ import java.util.Scanner;
  * @author Owen McGrath
  * @version 11/19/2024
  */
-public class EvensiesDriver 
+public class 
+EvensiesDriver 
 {
-  public static void main(String[] args) 
+  public static 
+  void main(String[] args) 
   {
     Scanner scan = new Scanner(System.in);
     System.out.println("Enter the number of tokens: ");
