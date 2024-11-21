@@ -31,8 +31,7 @@ Evensies
     //not sure how you'd have no tokens and still be playing the game. maybe you traded your car keys
     if (tokens <= 0 || rounds <= 0)
     {
-      //the base case has been reached
-      return tokens;
+      return tokens; //the base case has been reached
     }
     else
     {
@@ -153,9 +152,9 @@ Evensies
 
   /**
    * Determines the expected # of tokens for the player at the game's end,
-   * using a recurivse approach with caching.
-   *  @param die1
-   *  @param die
+   * using a top-down, divide and conquer approach, combined with caching.
+   *  @param tokens
+   *  @param rounds
    *  @return the expected # of tokens for the player at the game's end
    */
   public static
@@ -165,8 +164,7 @@ Evensies
     //not sure how you'd have no tokens and still be playing the game. maybe you traded your car keys
     if (tokens <= 0 || rounds <= 0)
     {
-      //the base case has been reached
-      return tokens;
+      return tokens; //the base case has been reached
     }
     else
     {
@@ -200,7 +198,7 @@ Evensies
       evens /= 36.0;
       odds /= 36.0;
 
-      //which strategy is better
+      //determines which strategy is better
       if (evens > odds)
       { return evens; }
       else
