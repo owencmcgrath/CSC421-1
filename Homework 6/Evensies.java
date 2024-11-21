@@ -7,7 +7,6 @@
 public class 
 Evensies 
 {
-
   private int tokens;
   private int rounds;
 
@@ -89,11 +88,11 @@ Evensies
     //not sure how you'd have no tokens and still be playing the game. maybe you traded your car keys
     if (tokens <= 0 || rounds <= 0)
     {
-      //the base case has been reached
-      return tokens;
+      return tokens; //the base case has been reached
     }
 
-    //the most amount of tokens the player can have is the number of tokens they started with + the number of rounds since you can only gain one token per round
+    //the most amount of tokens the player can have is the number of tokens they 
+    //started with + the number of rounds since you can only gain one token per round
     int maxTokens = tokens + rounds;
     double[][] map = new double[maxTokens][rounds];
 
@@ -135,7 +134,7 @@ Evensies
         }
 
         //divide by 36 because there are 36 possible outcoms of the dice
-        evens /= 36.0;
+        evens /= 36.0; 
         odds /= 36.0;
 
         //which strategy is better
@@ -150,6 +149,63 @@ Evensies
       }
     }
     return map[tokens][rounds - 1]; //return the expected value of the last round
+  }
+
+  /**
+   * Determines the expected # of tokens for the player at the game's end,
+   * using a recurivse approach with caching.
+   *  @param die1
+   *  @param die
+   *  @return the expected # of tokens for the player at the game's end
+   */
+  public static
+  double expectedCaching(int tokens, int rounds)
+  {
+    //if the player has no tokens or no rounds left, return the number of tokens
+    //not sure how you'd have no tokens and still be playing the game. maybe you traded your car keys
+    if (tokens <= 0 || rounds <= 0)
+    {
+      //the base case has been reached
+      return tokens;
+    }
+    else
+    {
+      double evens = 0;
+      double odds = 0;
+
+      //for each possible result of the dice
+      //starts at 1 because the dice can only be 1-6
+      for (int die1 = 1; die1 <= 6; die1++)
+      {
+        for (int die2 = 1; die2 <= 6; die2++)
+        {
+          int tokenChange = 0;
+
+          //evens strategy
+          tokenChange = calculateChangeForEvensies(die1, die2);
+          if (tokens + tokenChange >= 0) 
+          {
+            evens += expectedTopDown(tokens + tokenChange, rounds - 1);
+          }
+
+          //odds strategy
+          tokenChange = calculateChangeForOddsies(die1, die2);
+          if (tokens + tokenChange >= 0) 
+          {
+            odds += expectedTopDown(tokens + tokenChange, rounds - 1);
+          }
+        }
+      }
+      //divide by 36 because there are 36 possible outcoms of the dice
+      evens /= 36.0;
+      odds /= 36.0;
+
+      //which strategy is better
+      if (evens > odds)
+      { return evens; }
+      else
+      { return odds; }
+    }
   }
 
   /**
