@@ -34,6 +34,30 @@ Evensies
     }  
   }
 
+  public static double expectedBottomUp(int tokens, int rounds) {
+    double[][] roundTokenMap = new double[rounds + 1][tokens + 2 * rounds + 1];  //create a massive array to account for winning streaks
+    
+    //initialize the base case
+    //this accounts for the player winning/losing every round by multiplying rtounds by 2
+    for (int t = 0; t <= tokens + 2 * rounds; t++) {
+        roundTokenMap[0][t] = t;
+    }
+    
+    for (int r = 1; r <= rounds; r++) { //every round
+        for (int t = 0; t <= tokens + 2 * rounds - r; t++) { //accounts for a decrease in tokens as the game progresses
+            if (t <= 1) {
+                roundTokenMap[r][t] = 0;
+            } else {
+                roundTokenMap[r][t] = /*win*/(roundTokenMap[r-1][t+1] * 16/36.0) + //row above, column to the right
+                                    /*loss*/ (roundTokenMap[r-1][t-1] * 16/36.0) + //row above, column to the left
+                                    /*w+b*/  (roundTokenMap[r-1][t] * 2/36.0)    + //row above, same column      
+                                    /*l+b*/  (roundTokenMap[r-1][t-2] * 2/36.0);   //row above, two columns to the left
+            }
+        }
+    }
+  return roundTokenMap[rounds][tokens];
+}
+
   /**
    * Calls the expectedCachingCalculator method, which uses caching to determine the expected
    * # of tokens for the player at the game's end. This is done to avoid redeclaring the cache map
