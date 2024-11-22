@@ -3,8 +3,8 @@ import java.util.HashMap;
 /**
  * A class that determines the expected # of tokens for the player at the game's end,
  * using a top-down, divide & conquer approach.
- *    @author Owen McGrath
- *    @version 11/19/2024
+ * @author Owen McGrath
+ * @version 11/19/2024
  */
 public class 
 Evensies 
@@ -12,9 +12,9 @@ Evensies
   /**
    *  Determines the expected # of tokens for the player at the game's end,
    *  using a top-down, divide & conquer approach.
-   *    @param tokens the number of tokens currently held by the player
-   *    @param rounds the number of rounds left to be played
-   *    @return the expected # of tokens for the player at the game's end
+   *  @param tokens the number of tokens currently held by the player
+   *  @param rounds the number of rounds left to be played
+   *  @return the expected # of tokens for the player at the game's end
    */
   public static double 
   expectedTopDown(int tokens, int rounds)   
@@ -35,6 +35,14 @@ Evensies
     }  
   }
 
+  /**
+   * Calls the expectedCachingCalculator method, which uses caching to determine the expected
+   * # of tokens for the player at the game's end. This is done to avoid redeclaring the cache map
+   * each time the method is called.
+   * @param tokens the number of tokens currently held by the player
+   * @param rounds the number of rounds left to be played
+   * @return the expected # of tokens for the player at the game's end
+   */
   public static double expectedCaching(int tokens, int rounds) 
   {
     return expectedCachingCalculator(tokens, rounds, new HashMap<String, Double>());
@@ -43,9 +51,10 @@ Evensies
   /**
    * Determines the expected # of tokens for the player at the game's end,
    * using a top-down, divide and conquer approach, combined with caching.
-   *    @param tokens the number of tokens currently held by the player
-   *    @param rounds the number of rounds left to be played
-   *    @return the expected # of tokens for the player at the game's end
+   * @param tokens the number of tokens currently held by the player
+   * @param rounds the number of rounds left to be played
+   * @param cache a map that stores the expected # of tokens for each round and token value
+   * @return the expected # of tokens for the player at the game's end
    */
   public static
   double expectedCachingCalculator(int tokens, int rounds, HashMap<String, Double> cache)
