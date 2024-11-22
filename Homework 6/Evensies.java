@@ -22,8 +22,7 @@ Evensies
     //if the player has no tokens or no rounds left, return the number of tokens
     if (tokens <= 0 || rounds <= 0)
     {
-      //for caching, add this to a literal map
-      return tokens; //the base case has been reached
+      return tokens; 
     }
     else
     {
@@ -63,7 +62,7 @@ Evensies
 
     if (tokens <= 0 || rounds <= 0)
     {
-      return tokens; //the base case has been reached
+      return tokens; 
     }
 
     //if the key has already been found, just return that value
