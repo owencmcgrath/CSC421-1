@@ -20,37 +20,34 @@ Evensies
     double expectedTopDown
     (int tokens, int rounds)
     {
-    //if the player has no tokens or no rounds left, return the number of tokens
-    if (tokens <= 0 || rounds <= 0)
-    {
-      return tokens;
-    }
-    else
-    {
-      //everytime it is in the map, just return the value, otherwise calculate it and save it to the map, for caching
-      return  /*win*/ (expectedTopDown(tokens + 1, rounds - 1) * 16/36.0) +
-              /*loss*/ (expectedTopDown(tokens - 1, rounds - 1) * 16/36.0) +
-              /*l+b*/ (expectedTopDown(tokens - 2, rounds - 1) * 2/36.0) +
-              /*w+b*/ (expectedTopDown(tokens, rounds - 1) * 2/36.0);
+        //if the player has no tokens or no rounds left, return the number of tokens
+        if (tokens <= 0 || rounds <= 0)
+        {
+            return tokens;
+        }
+        else
+        {
+        //everytime it is in the map, just return the value, otherwise calculate it and save it to the map, for caching
+            return  /*win*/ (expectedTopDown(tokens + 1, rounds - 1) * 16/36.0) +
+                    /*loss*/ (expectedTopDown(tokens - 1, rounds - 1) * 16/36.0) +
+                    /*l+b*/ (expectedTopDown(tokens - 2, rounds - 1) * 2/36.0) +
+                    /*w+b*/ (expectedTopDown(tokens, rounds - 1) * 2/36.0);
         }
     }
 
-    public static
-    double expectedBottomUp
-    (int tokens, int rounds)
-    {
+    public static double expectedBottomUp(int tokens, int rounds) {
         double[][] roundTokenMap = new double[tokens + rounds + 2][rounds + 1];
 
         //initialize the base case
-        //this accounts for the player winning/losing every round by multiplying rounds by 2
-        for (int t = 0; t < roundTokenMap.length; t++)
+        //this accounts for the player winning/losing every round
+        for (int t = 0; t <= tokens + rounds; t++)
         {
             roundTokenMap[t][0] = t;
         }
 
-        for (int t = 1; t < roundTokenMap.length - 1; t++) //length is minus 1 because otherwise the 8th index is hit or something man
+        for (int r = 1; r < roundTokenMap[0].length; r++)
         {
-            for (int r = 1; r < roundTokenMap[0].length; r++)
+            for (int t = 2; t <= tokens + rounds; t++) //we have start at two because otherwise the final case will be out of bounds
             {
                 if (t <= 1)
                 {
@@ -58,15 +55,15 @@ Evensies
                 }
                 else
                 {
-                    roundTokenMap[t][r] = /*win*/(roundTokenMap[t+1][r-1] * 16/36.0) + //row above, column to the right
-                                          /*loss*/ (roundTokenMap[t-1][r-1] * 16/36.0) + //row above, column to the left
-                                          /*w+b*/  (roundTokenMap[t][r-1] * 2/36.0)    + //row above, same column
-                                          /*l+b*/  (roundTokenMap[t-2][r-1] * 2/36.0);   //row above, two columns to the left
+                    roundTokenMap[t][r] = /*win*/  (roundTokenMap[t+1][r-1] * 16/36.0) + //win first
+                                          /*loss*/ (roundTokenMap[t-1][r-1] * 16/36.0) + //then loss
+                                          /*w+b*/  (roundTokenMap[t][r-1] * 2/36.0)    + //then win+bottomsies
+                                          /*l+b*/  (roundTokenMap[t-2][r-1] * 2/36.0);   //finally loss+bottomsies
                 }
             }
         }
-    return roundTokenMap[tokens][rounds];
-}
+        return roundTokenMap[tokens][rounds];
+    }
 
   /**
    * Calls the expectedCachingCalculator method, which uses caching to determine the expected
