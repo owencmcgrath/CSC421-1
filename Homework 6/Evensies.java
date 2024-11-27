@@ -36,29 +36,29 @@ Evensies
     }
 
     public static double expectedBottomUp(int tokens, int rounds) {
-        double[][] roundTokenMap = new double[tokens + rounds + 2][rounds + 1];
+        double[][] roundTokenMap = new double[rounds + 1][tokens + rounds + 1];
 
         //initialize the base case
         //this accounts for the player winning/losing every round
         for (int t = 0; t <= tokens + rounds; t++)
         {
-            roundTokenMap[t][0] = t;
+            roundTokenMap[0][t] = t;
         }
 
-        for (int r = 1; r < roundTokenMap[0].length; r++)
+        double correct = 18.0/36.0;
+        double bottom = 4.0/36.0;
+
+        for (int r = 1; r <= rounds; r++)
         {
-            for (int t = 2; t <= tokens + rounds; t++) //we have start at two because otherwise the final case will be out of bounds
+            for (int t = 0; t <= tokens + rounds; t++) //we have start at two because otherwise the final case will be out of bounds
             {
-                if (t <= 1)
+                if (t > 0 && t + 1 <= tokens + rounds)
                 {
-                    roundTokenMap[t][r] = 0;
+                    roundTokenMap[r][t] += correct * (roundTokenMap[r-1][t+1] - bottom);
                 }
-                else
+                if (t-1>=0)
                 {
-                    roundTokenMap[t][r] = /*win*/  (roundTokenMap[t+1][r-1] * 16/36.0) + //win first
-                                          /*loss*/ (roundTokenMap[t-1][r-1] * 16/36.0) + //then loss
-                                          /*w+b*/  (roundTokenMap[t][r-1] * 2/36.0)    + //then win+bottomsies
-                                          /*l+b*/  (roundTokenMap[t-2][r-1] * 2/36.0);   //finally loss+bottomsies
+                    roundTokenMap[r][t] += (1 - correct) * (roundTokenMap[r-1][t-1] - bottom);
                 }
             }
         }
@@ -88,14 +88,14 @@ Evensies
    * @param cache a map that stores the expected # of tokens for each round and token value
    * @return the expected # of tokens for the player at the game's end
    */
-  public static
-  double expectedCachingCalculator
-  (int tokens, int rounds, HashMap<String, Double> cache)
-  {
+public static
+    double expectedCachingCalculator
+    (int tokens, int rounds, HashMap<String, Double> cache)
+    {
 
     if (tokens <= 0 || rounds <= 0)
     {
-      return tokens;
+        return tokens;
     }
 
     String key = rounds + "," + tokens;
@@ -103,15 +103,15 @@ Evensies
     //if the key has already been found, just return that value
     if (cache.containsKey(key))
     {
-      return cache.get(key);
+        return cache.get(key);
     }
 
     //otherwise, store it and return the value
-    double cachedValue =  /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * 16/36.0) +
-                          /*loss*/ (expectedCachingCalculator(tokens - 1, rounds - 1, cache) * 16/36.0) +
-                          /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * 2/36.0) +
-                          /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * 2/36.0);
+    double cachedValue =  /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * 16.0/36.0) +
+                            /*loss*/ (expectedCachingCalculator(tokens - 1, rounds - 1, cache) * 16.0/36.0) +
+                            /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * 2.0/36.0) +
+                            /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * 2.0/36.0);
     cache.put(key, cachedValue);
     return cachedValue;
-  }
+    }
 }
