@@ -13,18 +13,15 @@ EvensiesDriver
   {
     Scanner scan = new Scanner(System.in);
     System.out.println("=== Running Test Cases ===");
-    System.out.println("=== Running Test Cases ===");
-    runTestCase(1, 1);     // Test case 1
-    runTestCase(5, 5);     // Test case 2 
-    runTestCase(3, 6);     // Test case 3
-    runTestCase(6, 3);     // Test case 4
-    runTestCase(2, 9);     // Test case 5
-    
-    // Additional test cases
-    runTestCase(0, 5);     // Test case 6: Start with zero tokens
-    runTestCase(-2, 3);    // Test case 7: Start in debt
-    runTestCase(10, 1);    // Test case 8: Large tokens, small rounds
-    runTestCase(1, 10);    // Test case 9: Small tokens, large rounds
+    runTestCase(1, 1);
+    runTestCase(5, 5);
+    runTestCase(3, 6);
+    runTestCase(6, 3);
+    runTestCase(2, 9);
+    runTestCase(0, 5);
+    runTestCase(-2, 3);    
+    runTestCase(10, 1);
+    runTestCase(1, 10);
     
     System.out.println("\n=== Test Cases Complete ===\n");
     System.out.println("Enter the number of tokens: ");
@@ -40,7 +37,6 @@ EvensiesDriver
     System.out.println("3. Top-Down with Caching");
     int choice = scan.nextInt();
 
-    //a switch statement to determine which method the user wants, or if they want all three
     switch (choice) {
       case 0:
       System.out.println("Expected # of tokens at the end of the game with top-down: " + Evensies.expectedTopDown(tokens, rounds));
@@ -62,7 +58,8 @@ EvensiesDriver
     }
     scan.close();
   }
-  private static void runTestCase(int tokens, int rounds) {
+  private static void runTestCase(int tokens, int rounds) 
+  {
     System.out.printf("\nTest Case: %d tokens, %d rounds\n", tokens, rounds);
     double topDown = Evensies.expectedTopDown(tokens, rounds);
     double bottomUp = Evensies.expectedBottomUp(tokens, rounds);
@@ -70,7 +67,6 @@ EvensiesDriver
     System.out.printf("Top-down:  %.4f\n", topDown);
     System.out.printf("Bottom-up: %.4f\n", bottomUp);
     System.out.printf("Cached:    %.4f\n", cached);
-    System.out.println("Match? " + (Math.abs(topDown - bottomUp) < 0.0001 && 
-                                  Math.abs(topDown - cached) < 0.0001));
-}
+    System.out.println("Match? " + (Math.abs(topDown - bottomUp) < 0.0001 && Math.abs(topDown - cached) < 0.0001));
+  }
 }
