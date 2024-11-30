@@ -9,6 +9,10 @@ import java.util.HashMap;
 public class
 Evensies
 {
+    private static final double WIN_PROB = 16/36.0;
+    private static final double LOSS_PROB = 16/36.0;
+    private static final double BOTTOM_WIN_PROB = 2/36.0;
+    private static final double BOTTOM_LOSS_PROB = 2/36.0;
   /**
    *  Determines the expected # of tokens for the player at the game's end,
    *  using a top-down, divide & conquer approach.
@@ -27,42 +31,61 @@ Evensies
         }
         else
         {
-        //everytime it is in the map, just return the value, otherwise calculate it and save it to the map, for caching
-            return  /*win*/ (expectedTopDown(tokens + 1, rounds - 1) * 16/36.0) +
-                    /*loss*/ (expectedTopDown(tokens - 1, rounds - 1) * 16/36.0) +
-                    /*l+b*/ (expectedTopDown(tokens - 2, rounds - 1) * 2/36.0) +
-                    /*w+b*/ (expectedTopDown(tokens, rounds - 1) * 2/36.0);
+            //return the expected # of tokens for the player at the game's end
+            return  /*win*/ (expectedTopDown(tokens + 1, rounds - 1) * WIN_PROB)          +
+                    /*loss*/(expectedTopDown(tokens - 1, rounds - 1) * LOSS_PROB)         +
+                    /*l+b*/ (expectedTopDown(tokens - 2, rounds - 1) * BOTTOM_WIN_PROB)   +
+                    /*w+b*/ (expectedTopDown(tokens, rounds - 1) * BOTTOM_LOSS_PROB);
         }
     }
 
-    public static double expectedBottomUp(int tokens, int rounds) {
-        double[][] roundTokenMap = new double[rounds + 1][tokens + rounds + 1];
-
-        //initialize the base case
-        //this accounts for the player winning/losing every round
-        for (int t = 0; t <= tokens + rounds; t++)
+        public static double expectedBottomUp(int tokens, int rounds) 
+    {
+        // Match top-down base case exactly
+        if (tokens <= 0 || rounds <= 0)
         {
-            roundTokenMap[0][t] = t;
+            return tokens;
         }
-
-        double correct = 18.0/36.0;
-        double bottom = 4.0/36.0;
-
-        for (int r = 1; r <= rounds; r++)
+    
+        // Increase array size to handle all possible states
+        int minTokens = tokens - (2 * rounds);
+        int maxTokens = tokens + (2 * rounds); // Match recursive win case potential
+        int arraySize = maxTokens - minTokens + 1;
+        double[][] expected = new double[arraySize][rounds + 1];
+    
+        // Initialize base cases matching recursive base case
+        for (int t = 0; t < arraySize; t++) 
         {
-            for (int t = 0; t <= tokens + rounds; t++) //we have start at two because otherwise the final case will be out of bounds
+            int currentTokens = minTokens + t;
+            expected[t][0] = currentTokens <= 0 ? currentTokens : currentTokens;
+        }
+    
+        // Fill DP table matching recursive state transitions
+        for (int r = 1; r <= rounds; r++) 
+        {
+            for (int t = 0; t < arraySize; t++) 
             {
-                if (t > 0 && t + 1 <= tokens + rounds)
+                int currentTokens = minTokens + t;
+                if (currentTokens <= 0)
                 {
-                    roundTokenMap[r][t] += correct * (roundTokenMap[r-1][t+1] - bottom);
+                    expected[t][r] = currentTokens;
+                    continue;
                 }
-                if (t-1>=0)
-                {
-                    roundTokenMap[r][t] += (1 - correct) * (roundTokenMap[r-1][t-1] - bottom);
-                }
+    
+                // Match recursive calls exactly
+                double win = (t + 1 < arraySize) ? expected[t + 1][r-1] : (currentTokens + 1);
+                double loss = (t - 1 >= 0) ? expected[t - 1][r-1] : (currentTokens - 1);
+                double bottomWin = (t - 2 >= 0) ? expected[t - 2][r-1] : (currentTokens - 2);
+                double bottomLoss = expected[t][r-1];
+    
+                expected[t][r] = win * WIN_PROB + 
+                                loss * LOSS_PROB + 
+                                bottomWin * BOTTOM_WIN_PROB + 
+                                bottomLoss * BOTTOM_LOSS_PROB;
             }
         }
-        return roundTokenMap[tokens][rounds];
+    
+        return expected[tokens - minTokens][rounds];
     }
 
   /**
@@ -77,28 +100,29 @@ Evensies
     double expectedCaching
     (int tokens, int rounds)
     {
-        return expectedCachingCalculator(tokens, rounds, new HashMap<String, Double>());
+        return expectedCachingCalculator(tokens, rounds, new HashMap<>());
     }
 
-  /**
-   * Determines the expected # of tokens for the player at the game's end,
-   * using a top-down, divide and conquer approach, combined with caching.
-   * @param tokens the number of tokens currently held by the player
-   * @param rounds the number of rounds left to be played
-   * @param cache a map that stores the expected # of tokens for each round and token value
-   * @return the expected # of tokens for the player at the game's end
-   */
-public static
+   /**
+    * Determines the expected # of tokens for the player at the game's end,
+    * using a top-down, divide and conquer approach, combined with caching.
+    * @param tokens the number of tokens currently held by the player
+    * @param rounds the number of rounds left to be played
+    * @param cache a map that stores the expected # of tokens for each round and token value
+    * @return the expected # of tokens for the player at the game's end
+    */
+    public static
     double expectedCachingCalculator
     (int tokens, int rounds, HashMap<String, Double> cache)
     {
 
+    //if the player has no tokens or no rounds left, return the number of tokens
     if (tokens <= 0 || rounds <= 0)
     {
         return tokens;
     }
 
-    String key = rounds + "," + tokens;
+    String key = rounds + "," + tokens; //key for the cache map
 
     //if the key has already been found, just return that value
     if (cache.containsKey(key))
@@ -107,11 +131,32 @@ public static
     }
 
     //otherwise, store it and return the value
-    double cachedValue =  /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * 16.0/36.0) +
-                            /*loss*/ (expectedCachingCalculator(tokens - 1, rounds - 1, cache) * 16.0/36.0) +
-                            /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * 2.0/36.0) +
-                            /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * 2.0/36.0);
+    double cachedValue =    /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * WIN_PROB)         +
+                            /*loss*/(expectedCachingCalculator(tokens - 1, rounds - 1, cache) * LOSS_PROB)        +
+                            /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * BOTTOM_LOSS_PROB) +
+                            /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * BOTTOM_WIN_PROB);
     cache.put(key, cachedValue);
     return cachedValue;
+    }
+
+    public static void printTable(double[][] array)
+    {
+        System.out.print("      ");
+        for (int col = 0; col < array[0].length; col++)
+        {
+            System.out.printf("%8d ", col);
+        }
+
+        System.out.println("\n");
+
+        for (int row = 0; row < array.length; row++)
+        {
+            System.out.printf("[%2d] ", row);
+            for (int col = 0; col < array[row].length; col++)
+            {
+                System.out.printf("%8.2f ", array[row][col]);
+            }
+            System.out.println();
+        }
     }
 }
