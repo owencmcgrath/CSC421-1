@@ -37,7 +37,8 @@ EvensiesDriver
     System.out.println("3. Top-Down with Caching");
     int choice = scan.nextInt();
 
-    switch (choice) {
+    switch (choice) 
+    {
       case 0:
       System.out.println("Expected # of tokens at the end of the game with top-down: " + Evensies.expectedTopDown(tokens, rounds));
       System.out.println("Expected # of tokens at the end of the game with bottom-up: " + Evensies.expectedBottomUp(tokens, rounds));
@@ -58,7 +59,10 @@ EvensiesDriver
     }
     scan.close();
   }
-  private static void runTestCase(int tokens, int rounds) 
+
+  private static 
+  void runTestCase
+  (int tokens, int rounds) 
   {
     System.out.printf("\nTest Case: %d tokens, %d rounds\n", tokens, rounds);
     double topDown = Evensies.expectedTopDown(tokens, rounds);

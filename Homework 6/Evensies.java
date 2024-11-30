@@ -39,52 +39,94 @@ Evensies
         }
     }
 
-        public static double expectedBottomUp(int tokens, int rounds) 
+    /**
+     * Determines the expected # of tokens for the player at the game's end,
+     * using a bottom-up, dynamic programming approach.
+     * @param tokens the number of tokens currently held by the player
+     * @param rounds the number of rounds left to be played
+     * @return the expected # of tokens for the player at the game's end
+     */
+    public static 
+    double expectedBottomUp
+    (int tokens, int rounds) 
     {
-        // Match top-down base case exactly
+        //if the player has no tokens or no rounds left, return the number of tokens, imilar to the base case of the top-down approach
         if (tokens <= 0 || rounds <= 0)
         {
             return tokens;
         }
     
-        // Increase array size to handle all possible states
-        int minTokens = tokens - (2 * rounds);
-        int maxTokens = tokens + (2 * rounds); // Match recursive win case potential
-        int arraySize = maxTokens - minTokens + 1;
-        double[][] expected = new double[arraySize][rounds + 1];
+        //array calcualtions and setup
+        int minTokens = tokens - (2 * rounds); //the worst case scenario where the player loses every round and hits a bottomsies
+        int maxTokens = tokens + (2 * rounds); //the best case scenario where the player wins every round and avoids a bottomsies
+        int arraySize = maxTokens - minTokens + 1; //the array needs to account for both extremes, represents range from minimum possible tokens to the maximum possible tokens
+        double[][] expected = new double[arraySize][rounds + 1]; //rows are all of the possible tokens, columns are the rounds left to be played + plua one for the pesky base case
     
-        // Initialize base cases matching recursive base case
+        //fill the base case of the table with the first column at zero
+        //while t has less than total possible tokens, fill the table with the current tokens
         for (int t = 0; t < arraySize; t++) 
         {
-            int currentTokens = minTokens + t;
-            expected[t][0] = currentTokens <= 0 ? currentTokens : currentTokens;
+            expected[t][0] = minTokens + t; //this maps the array info to the actual token values (i.e, if there is a negative token, store the negative value, if there are possitive tokens, store the positive value)
         }
     
-        // Fill DP table matching recursive state transitions
-        for (int r = 1; r <= rounds; r++) 
+        //fill the rest of the table
+        for (int r = 1; r <= rounds; r++) //for each round
         {
-            for (int t = 0; t < arraySize; t++) 
+            for (int t = 0; t < arraySize; t++) //for each token value
             {
-                int currentTokens = minTokens + t;
+                int currentTokens = minTokens + t; //maps the array index back to the actual token count where minTokens is the worse case scenario and adding t gives us the actial token count
+
+                //if the player has no tokens, there's no need to calculate anything
                 if (currentTokens <= 0)
                 {
-                    expected[t][r] = currentTokens;
-                    continue;
+                    expected[t][r] = currentTokens; //store the current token value
+                    continue; //skips to the next iteration since there;s nothing left to calculate
                 }
     
-                // Match recursive calls exactly
-                double win = (t + 1 < arraySize) ? expected[t + 1][r-1] : (currentTokens + 1);
-                double loss = (t - 1 >= 0) ? expected[t - 1][r-1] : (currentTokens - 1);
-                double bottomWin = (t - 2 >= 0) ? expected[t - 2][r-1] : (currentTokens - 2);
+                double win, loss, bottomWin; //this is so cool?!
+                //if the player has more tokens than the minimum possible, check if adding another token is possible
+                //if it is, use the previous round's value, otherwise, use the current token value + 1
+                if (t + 1 < arraySize)
+                {
+                    win = expected[t + 1][r-1];
+                } 
+                else 
+                {
+                    win = currentTokens + 1;
+                }
+
+                //if the player has more tokens than the minimum possible, check if subtracting a token is possible
+                //if it is, use the previous round's value, otherwise, use the current token value - 1
+                if (t - 1 >= 0) 
+                {
+                    loss = expected[t - 1][r-1];
+                } 
+                else 
+                {
+                    loss = currentTokens - 1;
+                }
+
+                //if the player has more tokens than the minimum possible, check if subtracting two tokens is possible
+                //if it is, use the previous round's value, otherwise, use the current token value - 2
+                if (t - 2 >= 0) 
+                {
+                    bottomWin = expected[t - 2][r-1];
+                } 
+                else 
+                {
+                    bottomWin = currentTokens - 2;
+                }
+
+                //if the player has more tokens than the minimum possible, check if adding two tokens is possible
                 double bottomLoss = expected[t][r-1];
-    
-                expected[t][r] = win * WIN_PROB + 
-                                loss * LOSS_PROB + 
-                                bottomWin * BOTTOM_WIN_PROB + 
-                                bottomLoss * BOTTOM_LOSS_PROB;
+
+                //store the expected # of tokens for the player at the game's end
+                expected[t][r] = win * WIN_PROB              + 
+                                 loss * LOSS_PROB            + 
+                                 bottomWin * BOTTOM_WIN_PROB + 
+                                 bottomLoss * BOTTOM_LOSS_PROB;
             }
         }
-    
         return expected[tokens - minTokens][rounds];
     }
 
@@ -116,27 +158,27 @@ Evensies
     (int tokens, int rounds, HashMap<String, Double> cache)
     {
 
-    //if the player has no tokens or no rounds left, return the number of tokens
-    if (tokens <= 0 || rounds <= 0)
-    {
-        return tokens;
-    }
+        //if the player has no tokens or no rounds left, return the number of tokens
+        if (tokens <= 0 || rounds <= 0)
+        {
+            return tokens;
+        }
 
-    String key = rounds + "," + tokens; //key for the cache map
+        String key = rounds + "," + tokens; //key for the cache map
 
-    //if the key has already been found, just return that value
-    if (cache.containsKey(key))
-    {
-        return cache.get(key);
-    }
+        //if the key has already been found, just return that value
+        if (cache.containsKey(key))
+        {
+            return cache.get(key);
+        }
 
-    //otherwise, store it and return the value
-    double cachedValue =    /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * WIN_PROB)         +
-                            /*loss*/(expectedCachingCalculator(tokens - 1, rounds - 1, cache) * LOSS_PROB)        +
+        //otherwise, store it and return the value
+        double cachedValue = /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * WIN_PROB) +
+                            /*loss*/(expectedCachingCalculator(tokens - 1, rounds - 1, cache) * LOSS_PROB) +
                             /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * BOTTOM_LOSS_PROB) +
                             /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * BOTTOM_WIN_PROB);
-    cache.put(key, cachedValue);
-    return cachedValue;
+        cache.put(key, cachedValue);
+        return cachedValue;
     }
 
     public static void printTable(double[][] array)
