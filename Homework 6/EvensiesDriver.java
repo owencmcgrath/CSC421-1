@@ -13,10 +13,10 @@ EvensiesDriver
   {
     Scanner scan = new Scanner(System.in);
     System.out.println("=== Running Test Cases ===");
-    runTestCase(1, 1);
     runTestCase(5, 5);
-    runTestCase(3, 6);
-    runTestCase(6, 3);
+    runTestCase(6, 2);
+    runTestCase(2, 6);
+    runTestCase(1, 1);
     runTestCase(2, 9);
     runTestCase(0, 5);
     runTestCase(-2, 3);    

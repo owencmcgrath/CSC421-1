@@ -25,7 +25,7 @@ Evensies
     (int tokens, int rounds)
     {
         //if the player has no tokens or no rounds left, return the number of tokens
-        if (tokens <= 0 || rounds <= 0)
+        if (rounds <= 0)
         {
             return tokens;
         }
@@ -51,7 +51,7 @@ Evensies
     (int tokens, int rounds) 
     {
         //if the player has no tokens or no rounds left, return the number of tokens, imilar to the base case of the top-down approach
-        if (tokens <= 0 || rounds <= 0)
+        if (rounds <= 0)
         {
             return tokens;
         }
@@ -77,11 +77,7 @@ Evensies
                 int currentTokens = minTokens + t; //maps the array index back to the actual token count where minTokens is the worse case scenario and adding t gives us the actial token count
 
                 //if the player has no tokens, there's no need to calculate anything
-                if (currentTokens <= 0)
-                {
-                    expected[t][r] = currentTokens; //store the current token value
-                    continue; //skips to the next iteration since there;s nothing left to calculate
-                }
+                expected[t][r] = currentTokens; //store the current token value
     
                 double win, loss, bottomWin; //this is so cool?!
                 //if the player has more tokens than the minimum possible, check if adding another token is possible
@@ -159,7 +155,7 @@ Evensies
     {
 
         //if the player has no tokens or no rounds left, return the number of tokens
-        if (tokens <= 0 || rounds <= 0)
+        if (rounds <= 0)
         {
             return tokens;
         }
@@ -175,30 +171,30 @@ Evensies
         //otherwise, store it and return the value
         double cachedValue = /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * WIN_PROB) +
                             /*loss*/(expectedCachingCalculator(tokens - 1, rounds - 1, cache) * LOSS_PROB) +
-                            /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * BOTTOM_LOSS_PROB) +
-                            /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * BOTTOM_WIN_PROB);
+                            /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * BOTTOM_WIN_PROB) +
+                            /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * BOTTOM_LOSS_PROB);
         cache.put(key, cachedValue);
         return cachedValue;
     }
 
-    public static void printTable(double[][] array)
-    {
-        System.out.print("      ");
-        for (int col = 0; col < array[0].length; col++)
-        {
-            System.out.printf("%8d ", col);
-        }
+    // public static void printTable(double[][] array)
+    // {
+    //     System.out.print("      ");
+    //     for (int col = 0; col < array[0].length; col++)
+    //     {
+    //         System.out.printf("%8d ", col);
+    //     }
 
-        System.out.println("\n");
+    //     System.out.println("\n");
 
-        for (int row = 0; row < array.length; row++)
-        {
-            System.out.printf("[%2d] ", row);
-            for (int col = 0; col < array[row].length; col++)
-            {
-                System.out.printf("%8.2f ", array[row][col]);
-            }
-            System.out.println();
-        }
-    }
+    //     for (int row = 0; row < array.length; row++)
+    //     {
+    //         System.out.printf("[%2d] ", row);
+    //         for (int col = 0; col < array[row].length; col++)
+    //         {
+    //             System.out.printf("%8.2f ", array[row][col]);
+    //         }
+    //         System.out.println();
+    //     }
+    // }
 }
