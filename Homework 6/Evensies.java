@@ -176,25 +176,4 @@ Evensies
         cache.put(key, cachedValue);
         return cachedValue;
     }
-
-    // public static void printTable(double[][] array)
-    // {
-    //     System.out.print("      ");
-    //     for (int col = 0; col < array[0].length; col++)
-    //     {
-    //         System.out.printf("%8d ", col);
-    //     }
-
-    //     System.out.println("\n");
-
-    //     for (int row = 0; row < array.length; row++)
-    //     {
-    //         System.out.printf("[%2d] ", row);
-    //         for (int col = 0; col < array[row].length; col++)
-    //         {
-    //             System.out.printf("%8.2f ", array[row][col]);
-    //         }
-    //         System.out.println();
-    //     }
-    // }
 }
