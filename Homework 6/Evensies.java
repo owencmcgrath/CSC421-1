@@ -74,7 +74,7 @@ Evensies
         {
             for (int t = 0; t < arraySize; t++) //for each token value
             {
-                int currentTokens = minTokens + t; //maps the array index back to the actual token count where minTokens is the worse case scenario and adding t gives us the actial token count
+                int currentTokens = minTokens + t; //maps the array index back to the actual token count where minTokens is the worse case scenario and adding t gives us the actual token count
 
                 //if the player has no tokens, there's no need to calculate anything
                 expected[t][r] = currentTokens; //store the current token value
@@ -169,10 +169,10 @@ Evensies
         }
 
         //otherwise, store it and return the value
-        double cachedValue = /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * WIN_PROB) +
-                            /*loss*/(expectedCachingCalculator(tokens - 1, rounds - 1, cache) * LOSS_PROB) +
-                            /*l+b*/ (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * BOTTOM_WIN_PROB) +
-                            /*w+b*/ (expectedCachingCalculator(tokens, rounds - 1, cache) * BOTTOM_LOSS_PROB);
+        double cachedValue = /*win*/ (expectedCachingCalculator(tokens + 1, rounds - 1, cache) * WIN_PROB)        +
+                            /*loss*/ (expectedCachingCalculator(tokens - 1, rounds - 1, cache) * LOSS_PROB)       +
+                            /*l+b*/  (expectedCachingCalculator(tokens - 2, rounds - 1, cache) * BOTTOM_WIN_PROB) +
+                            /*w+b*/  (expectedCachingCalculator(tokens, rounds - 1, cache) * BOTTOM_LOSS_PROB);
         cache.put(key, cachedValue);
         return cachedValue;
     }
