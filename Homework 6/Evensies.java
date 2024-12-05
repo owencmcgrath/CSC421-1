@@ -6,7 +6,8 @@ import java.util.HashMap;
  * @author Owen McGrath
  * @version 11/19/2024
  */
-public class Evensies
+public class
+Evensies
 {
 
     private static final double WIN_PROB = 16 / 36.0;
@@ -21,7 +22,9 @@ public class Evensies
      *  @param rounds the number of rounds left to be played
      *  @return the expected # of tokens for the player at the game's end
      */
-    public static double expectedTopDown(int tokens, int rounds)
+    public static
+    double expectedTopDown
+    (int tokens, int rounds)
     {
         if (rounds <= 0 || tokens <= 0)
         {
@@ -44,7 +47,9 @@ public class Evensies
      * @param rounds the number of rounds left to be played
      * @return the expected # of tokens for the player at the game's end
      */
-    public static double expectedBottomUp(int tokens, int rounds)
+    public static
+    double expectedBottomUp
+    (int tokens, int rounds)
     {
         if (rounds <= 0 || tokens <= 0)
         {

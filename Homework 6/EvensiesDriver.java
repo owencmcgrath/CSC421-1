@@ -6,13 +6,16 @@ import java.util.Scanner;
  * @author Owen McGrath
  * @version 11/19/2024
  */
-public class EvensiesDriver
+public class
+EvensiesDriver
 {
     /**
     * Main method that takes the input/output for the program
     * @param args arguments
     */
-    public static void main(String[] args)
+    public static
+    void main
+    (String[] args)
     {
         try (Scanner scan = new Scanner(System.in))
         {
@@ -44,7 +47,9 @@ public class EvensiesDriver
      * @param rounds the number of rounds
      * @param timer the timer object
      */
-    private static void runAllMethods(int tokens, int rounds)
+    private static
+    void runAllMethods
+    (int tokens, int rounds)
     {
         runTopDown(tokens, rounds);
         runBottomUp(tokens, rounds);
@@ -57,7 +62,9 @@ public class EvensiesDriver
      * @param rounds the number of rounds
      * @param timer the timer object
      */
-    private static void runTopDown(int tokens, int rounds)
+    private static
+    void runTopDown
+    (int tokens, int rounds)
     {
         StopWatch timer = new StopWatch();
         timer.start();
@@ -72,7 +79,9 @@ public class EvensiesDriver
      * @param rounds the number of rounds
      * @param timer the timer object
      */
-    private static void runBottomUp(int tokens, int rounds)
+    private static
+    void runBottomUp
+    (int tokens, int rounds)
     {
         StopWatch timer = new StopWatch();
         timer.start();
@@ -87,7 +96,9 @@ public class EvensiesDriver
      * @param rounds the number of rounds
      * @param timer the timer object
      */
-    private static void runCaching(int tokens, int rounds)
+    private static
+    void runCaching
+    (int tokens, int rounds)
     {
         StopWatch timer = new StopWatch();
         timer.start();
